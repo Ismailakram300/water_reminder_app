@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../customs_widgets/mytext.dart';
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -40,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image(image: AssetImage("assets/images/water.png")),
-              mytext(),
+              Mytext(txt: "Water Reminder",),
             ],
           ),
         ),

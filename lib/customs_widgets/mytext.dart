@@ -6,7 +6,7 @@ final String txt;
 
   @override
   Widget build(BuildContext context) {
-    return Text(txt, style: TextStyle(color: Color(0xff030303,),
+    return Text(txt, style: TextStyle(color: Color(0xff030303,), fontFamily: 'Mulish',fontWeight: FontWeight.bold,
     fontSize: 30),);
   }
 }
