@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:water_reminder_app/screens/time_step.dart';
+import 'package:water_reminder_app/screens/weight_step.dart';
+
+import 'gender_step.dart';
+import 'onboarding_progress_header.dart';
 
 
 class OnboardingScreen extends StatefulWidget {
