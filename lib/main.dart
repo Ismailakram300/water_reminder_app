@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:water_reminder_app/screens/onboradscreen.dart';
 import 'package:water_reminder_app/screens/splash_screen.dart';
 
 void main() {
@@ -16,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: OnboardingScreen(),
+      home: SplashScreen(),
     );
   }
 }

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-// import '../widgets/onboarding_progress_header.dart';
-// import '../widgets/gender_step.dart';
-// import '../widgets/weight_step.dart';
-// import '../widgets/time_step.dart';
+
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -32,8 +29,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-     final steps = [
-
+    final steps = [
+      GenderStep(
+        selectedGender: selectedGender,
+        onChanged: (val) => setState(() => selectedGender = val),
+      ),
+      WeightStep(
+        weight: selectedWeight,
+        onChanged: (val) => setState(() => selectedWeight = val),
+      ),
+      TimeStep(
+        label: "Choose wake-up time",
+        time: wakeUpTime,
+        onTimeChanged: (val) => setState(() => wakeUpTime = val),
+      ),
+      TimeStep(
+        label: "Choose sleep time",
+        time: sleepTime,
+        onTimeChanged: (val) => setState(() => sleepTime = val),
+      ),
     ];
 
     return Scaffold(
@@ -41,13 +55,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // OnboardingProgressHeader(
-            //   currentStep: currentStep,
-            //   gender: selectedGender,
-            //   weight: selectedWeight,
-            //   wakeUpTime: wakeUpTime,
-            //   sleepTime: sleepTime,
-            // ),
+            OnboardingProgressHeader(
+              currentStep: currentStep,
+              gender: selectedGender,
+              weight: selectedWeight,
+              wakeUpTime: wakeUpTime,
+              sleepTime: sleepTime,
+            ),
             const SizedBox(height: 20),
             Expanded(child: steps[currentStep]),
             Row(
