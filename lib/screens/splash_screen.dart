@@ -5,8 +5,11 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DecoratedBox(decoration: BoxDecoration(
+      image: DecorationImage(image: AssetImage(''),
+      fit: BoxFit.fill),
+    ),
 
-    );
+    ),
   }
 }
