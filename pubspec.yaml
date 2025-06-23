@@ -76,7 +76,7 @@ flutter:
   fonts:
     - family: Mulish
       fonts:
-        - asset: fonts/Mulish-VariableFont_wght.ttf
+        - asset: fonts/Mulish-Bold.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
