@@ -56,6 +56,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     ];
 
     return Scaffold(
+      backgroundColor: Color(0xffEFF7FF),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:water_reminder_app/customs_widgets/mytext.dart';
 
 class GenderStep extends StatelessWidget {
   final String selectedGender;
@@ -14,7 +15,7 @@ class GenderStep extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text("Choose your gender", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+           Mytext(txt:"Choose your gender", ),
         const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -24,17 +25,13 @@ class GenderStep extends StatelessWidget {
               onTap: () => onChanged(gender),
               child: Column(
                 children: [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundColor: isSelected ? Colors.blue[100] : Colors.grey[200],
-                    child: Icon(Icons.person, size: 40),
-                  ),
+               Image(image: AssetImage("assets/images/water.png")),
                   Radio<String>(
                     value: gender,
                     groupValue: selectedGender,
                     onChanged: (val) => onChanged(val!),
                   ),
-                  Text(gender),
+                  Mytext(txt: gender),
                 ],
               ),
             );
