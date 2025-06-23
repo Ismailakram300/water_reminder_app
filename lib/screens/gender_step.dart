@@ -13,31 +13,42 @@ class GenderStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-           Mytext(txt:"Choose your gender", ),
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: ['Male', 'Female'].map((gender) {
-            bool isSelected = selectedGender == gender;
-            return GestureDetector(
-              onTap: () => onChanged(gender),
-              child: Column(
-                children: [
-               Image(image: AssetImage("assets/images/water.png")),
-                  Radio<String>(
-                    value: gender,
-                    groupValue: selectedGender,
-                    onChanged: (val) => onChanged(val!),
-                  ),
-                  Mytext(txt: gender),
-                ],
-              ),
-            );
-          }).toList(),
-        ),
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: ['Male', 'Female'].map((gender) {
+              bool isSelected = selectedGender == gender;
+              String imagePath = gender == 'Male'
+                  ? 'assets/images/male.png'
+                  : 'assets/images/female.png';
+              return GestureDetector(
+                onTap: () => onChanged(gender),
+                child: Column(
+                  children: [
+                  Image.asset(
+                  imagePath,
+                  height: 100,
+                  width: 100,
+                 ),
+                    Radio<String>(
+                      value: gender,
+                      groupValue: selectedGender,
+                      onChanged: (val) => onChanged(val!),
+                    ),
+                    Mytext(txt: gender),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
     );
   }
 }

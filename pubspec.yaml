@@ -65,6 +65,8 @@ flutter:
      - assets/images/alarm_time.png
      - assets/images/bedtime.png
      - assets/images/kg.png
+     - assets/images/male.png
+     - assets/images/female.png
      - assets/images/malefemale.png
 
   # An images asset can refer to one or more resolution-specific "variants", see
