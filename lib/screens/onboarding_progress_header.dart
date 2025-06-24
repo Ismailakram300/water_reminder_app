@@ -41,7 +41,7 @@ class OnboardingProgressHeader extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: !selected ? Colors.blue : Colors.grey[300],
+                    color: selected ?Colors.grey[300]: Colors.blue ,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Image.asset(
