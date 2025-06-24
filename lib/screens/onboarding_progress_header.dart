@@ -28,7 +28,7 @@ class OnboardingProgressHeader extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.fromLTRB(0, 55, 0,0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: steps.asMap().entries.map((entry) {
