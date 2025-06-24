@@ -19,9 +19,8 @@ class WeightStep extends StatelessWidget {
           size: 26,
         ),
         Row(
-          spacing: 40,
           children: [
-            const SizedBox(height: 20),
+             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12.0),
               child: Image.asset('assets/images/weight.png', height: 300),
