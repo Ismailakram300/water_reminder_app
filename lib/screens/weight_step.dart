@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
+import '../customs_widgets/mytext.dart';
+
 class WeightStep extends StatelessWidget {
   final int weight;
   final ValueChanged<int> onChanged;
@@ -9,17 +11,46 @@ class WeightStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        const SizedBox(height: 20),
-        Image.asset('assets/images/weight.png', height: 100), // Optional image
-        NumberPicker(
-          value: weight,
-          minValue: 30,
-          maxValue: 150,
-          onChanged: onChanged,
+        Mytext(
+          decoration: TextDecoration.underline,
+          txt: "Choose your gender",
+          size: 26,
         ),
-        Text("$weight : kg", style: const TextStyle(fontSize: 18, color: Colors.blue)),
+        Row(
+          spacing: 40,
+          children: [
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: Image.asset('assets/images/weight.png', height: 300),
+            ), // Optional image
+            Row(
+              children: [
+                NumberPicker(
+                  selectedTextStyle: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                  value: weight,
+                  textStyle: TextStyle(color: Color(0xff6C6C6C), fontSize: 25),
+                  minValue: 20,
+                  itemHeight: 45,
+                  itemWidth: 40,
+                  maxValue: 150,
+
+                  onChanged: onChanged,
+                ),
+                Text(
+                  ": kg",
+                  style: const TextStyle(fontSize: 28, color: Colors.blue),
+                ),
+              ],
+            ),
+          ],
+        ),
       ],
     );
   }
