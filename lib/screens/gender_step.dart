@@ -48,7 +48,7 @@ class GenderStep extends StatelessWidget {
 
                     ),
                   ),
-                  const SizedBox(height: 10),
+
                   Row(
                     children: [
                       Radio<String>(
