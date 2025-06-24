@@ -9,11 +9,10 @@ class WeightStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       children: [
-        const Text("Choose your weight", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         const SizedBox(height: 20),
-        Image.asset('assets/scale_boy.png', height: 100), // Optional image
+        Image.asset('assets/images/weight.png', height: 100), // Optional image
         NumberPicker(
           value: weight,
           minValue: 30,
