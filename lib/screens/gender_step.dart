@@ -25,7 +25,7 @@ class GenderStep extends StatelessWidget {
             size: 26,
           ),
         ),
-        const SizedBox(height: 130),
+        const SizedBox(height: 100),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: ['Male', 'Female'].map((gender) {
