@@ -68,6 +68,7 @@ flutter:
      - assets/images/male.png
      - assets/images/female.png
      - assets/images/malefemale.png
+     - assets/images/weight.png
 
   # An images asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
