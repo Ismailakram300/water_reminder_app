@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:water_reminder_app/customs_widgets/mytext.dart';
+import 'package:water_reminder_app/screens/home_screen.dart';
 import 'package:water_reminder_app/screens/time_step.dart';
+import 'package:water_reminder_app/screens/time_weakup.dart';
 import 'package:water_reminder_app/screens/weight_step.dart';
 
 import 'gender_step.dart';
 import 'onboarding_progress_header.dart';
-
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -24,6 +25,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void nextStep() {
     if (currentStep < 3) {
       setState(() => currentStep++);
+    }else{
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
     }
   }
 
@@ -44,7 +50,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         weight: selectedWeight,
         onChanged: (val) => setState(() => selectedWeight = val),
       ),
-      TimeStep(
+      TimeWakeup(
         label: "Choose wake-up time",
         time: wakeUpTime,
         onTimeChanged: (val) => setState(() => wakeUpTime = val),
@@ -54,6 +60,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         time: sleepTime,
         onTimeChanged: (val) => setState(() => sleepTime = val),
       ),
+
     ];
 
     return Scaffold(
@@ -70,9 +77,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               sleepTime: sleepTime,
             ),
             const SizedBox(height: 20),
-            Container(
-                height: 450,
-                child: steps[currentStep]),
+            Container(height: 450, child: steps[currentStep]),
             Padding(
               padding: const EdgeInsets.all(14.0),
               child: Row(
@@ -81,33 +86,43 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),color:  Color(0xff278DE8),
+                      borderRadius: BorderRadius.circular(50),
+                      color: Color(0xff278DE8),
                     ),
                     width: 45,
                     height: 45,
-                    child:  InkWell(
-                      onTap:previousStep,
-                      child: Center(child: Icon(Icons.arrow_back_ios_rounded, color: Colors.white,size: 30,)),
+                    child: InkWell(
+                      onTap: previousStep,
+                      child: Center(
+                        child: Icon(
+                          Icons.arrow_back_ios_rounded,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      ),
                     ),
-
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(9),color:  Color(0xff278DE8),
+                      borderRadius: BorderRadius.circular(9),
+                      color: Color(0xff278DE8),
                     ),
                     width: 76,
                     height: 41,
-                    child:  InkWell(
+                    child: InkWell(
                       onTap: nextStep,
-                      child: Center(child: Mytext(txt:currentStep == 3 ? "Finish" : "Next",size: 19,color: Colors.white,)),
+                      child: Center(
+                        child: Mytext(
+                          txt: currentStep == 3 ? "Finish" : "Next",
+                          size: 19,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-
                   ),
-
-
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
