@@ -13,16 +13,18 @@ class WeightStep extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(height: 30),
+
         Mytext(
           decoration: TextDecoration.underline,
           txt: "Choose your gender",
           size: 26,
         ),
         Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-             const SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Image.asset('assets/images/weight.png', height: 300),
             ), // Optional image
             Row(
