@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:water_reminder_app/customs_widgets/mytext.dart';
 import 'package:water_reminder_app/screens/time_step.dart';
 import 'package:water_reminder_app/screens/weight_step.dart';
 
@@ -69,19 +70,43 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               sleepTime: sleepTime,
             ),
             const SizedBox(height: 20),
-            Expanded(child: steps[currentStep]),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.blue),
-                  onPressed: previousStep,
-                ),
-                ElevatedButton(
-                  onPressed: nextStep,
-                  child: Text(currentStep == 3 ? "Finish" : "Next"),
-                )
-              ],
+            Container(
+                height: 550,
+                child: steps[currentStep]),
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),color:  Color(0xff278DE8),
+                    ),
+                    width: 45,
+                    height: 45,
+                    child:  InkWell(
+                      onTap:previousStep,
+                      child: Center(child: Icon(Icons.arrow_back_ios_rounded, color: Colors.white,size: 30,)),
+                    ),
+
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(9),color:  Color(0xff278DE8),
+                    ),
+                    width: 76,
+                    height: 41,
+                    child:  InkWell(
+                      onTap: nextStep,
+                      child: Center(child: Mytext(txt:currentStep == 3 ? "Finish" : "Next",size: 19,color: Colors.white,)),
+                    ),
+
+                  ),
+
+
+                ],
+              ),
             )
           ],
         ),
