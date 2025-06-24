@@ -37,38 +37,40 @@ class GenderStep extends StatelessWidget {
             return GestureDetector(
               onTap: () => onChanged(gender),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                     height: 130,
                     width: 130,
-
-                    padding: const EdgeInsets.all(8),
-                    child: Image.asset(
-                      imagePath,
-
-                    ),
+                    child: Image.asset(imagePath),
                   ),
-
-                  Row(
-                    children: [
-                      Radio<String>(
-                        value: gender,
-                        groupValue: selectedGender,
-                        onChanged: (val) => onChanged(val!),
-                        activeColor: Colors.blue,
-                      ),
-                      Mytext(
-                        txt: gender,
-                        size: 19,
-                        color: isSelected
-                            ? Color(0xff278DE8)
-                            : Color(0xff979797),
-                      ),
-                    ],
+                  const SizedBox(height: 8),
+                  // 🔧 Fixed: center the row
+                  Center(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Radio<String>(
+                          value: gender,
+                          groupValue: selectedGender,
+                          onChanged: (val) => onChanged(val!),
+                          activeColor: Colors.blue,
+                        ),
+                        Mytext(
+                          txt: gender,
+                          size: 19,
+                          color: isSelected
+                              ? Color(0xff278DE8)
+                              : Color(0xff979797),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             );
+
+
           }).toList(),
         ),
       ],
