@@ -71,7 +71,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             const SizedBox(height: 20),
             Container(
-                height: 550,
+                height: 450,
                 child: steps[currentStep]),
             Padding(
               padding: const EdgeInsets.all(14.0),
