@@ -23,7 +23,7 @@ class OnboardingProgressHeader extends StatelessWidget {
       {'image': "assets/images/malefemale.png", 'label': gender},
       {'image': "assets/images/kg.png", 'label': '${weight}kg'},
       {'image':"assets/images/alarm_time.png", 'label': _formatTime(wakeUpTime)},
-      {'image': "assets/images/bedtime.png", 'label': _formatTime(sleepTime)},
+      {'image': "assets/images/bed.png", 'label': _formatTime(sleepTime)},
     ];
 
     return SafeArea(
@@ -41,7 +41,7 @@ class OnboardingProgressHeader extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: selected ?Colors.grey[300]: Colors.blue ,
+                    color: selected ?Colors.blue: Colors.grey[300] ,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Image.asset(
@@ -51,7 +51,7 @@ class OnboardingProgressHeader extends StatelessWidget {
                     color: Colors.white,
                   ),              ),
                 const SizedBox(height: 4),
-                Mytext(txt:step['label']  as String ,size: 15),
+                Mytext(txt:step['label']  as String ,size: 11),
               ],
             ) ;
           }).toList(),

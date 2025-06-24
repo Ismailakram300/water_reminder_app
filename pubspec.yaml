@@ -35,6 +35,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   numberpicker: ^2.1.1
+  liquid_progress_indicator_v2: ^0.5.0
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:
@@ -68,7 +70,11 @@ flutter:
      - assets/images/male.png
      - assets/images/female.png
      - assets/images/malefemale.png
+     - assets/images/bedTime.png
+     - assets/images/bed.png
+     - assets/images/wakeup.png
      - assets/images/weight.png
+     - assets/images/app_drop.png
 
   # An images asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
