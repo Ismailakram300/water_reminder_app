@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../customs_widgets/mytext.dart';
-import 'home_screen.dart';
-import 'onboarding_progress_header.dart';
 import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     //TODO: implement initState
-    Timer(Duration(seconds: 7), () {
+    Timer(Duration(seconds: 4), () {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => OnboardingScreen()),
