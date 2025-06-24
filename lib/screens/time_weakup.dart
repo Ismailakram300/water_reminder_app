@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../customs_widgets/mytext.dart';
 
-class TimeStep extends StatelessWidget {
+class TimeWakeup extends StatelessWidget {
   final String label;
   final TimeOfDay time;
   final ValueChanged<TimeOfDay> onTimeChanged;
 
-  const TimeStep({
+  const TimeWakeup({
     super.key,
     required this.label,
     required this.time,
@@ -30,7 +30,7 @@ class TimeStep extends StatelessWidget {
 
         Mytext(
           decoration: TextDecoration.underline,
-          txt: "Choose bedtime",
+          txt: "Choose wake-up time",
           size: 26,
         ),
         const SizedBox(height: 30),
@@ -42,7 +42,7 @@ class TimeStep extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Image.asset(
-                'assets/images/bedTime.png',
+                'assets/images/wakeup.png',
                 height: 200,
                 width: 200,
               ),
