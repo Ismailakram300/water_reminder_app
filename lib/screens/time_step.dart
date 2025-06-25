@@ -19,9 +19,15 @@ class TimeStep extends StatefulWidget {
 }
 
 class _TimeStepState extends State<TimeStep> {
-  late int _selectedHour = widget.time.hour;
-  late int _selectedMinute =  widget.time.minute;
+  late int _selectedHour ;
+  late int _selectedMinute ;
 
+  void initState(){
+    setState(() {
+      _selectedHour=widget.time.hour;
+      _selectedMinute=widget.time.minute;
+    });
+  }
   void _updateTime() {
     widget.onTimeChanged(TimeOfDay(
       hour: _selectedHour,
@@ -71,7 +77,8 @@ class _TimeStepState extends State<TimeStep> {
 
                     zeroPad: true,
                     onChanged: (value) =>
-                        setState(() => _selectedHour = value),
+                    {setState(() => _selectedHour = value),
+                    _updateTime()},
                   ),
                 ),
                 Padding(
@@ -89,7 +96,12 @@ class _TimeStepState extends State<TimeStep> {
                     value: _selectedMinute,
                     zeroPad: true,
                     onChanged: (value) =>
-                        setState(() => _selectedMinute = value),
+                        {
+                    setState(() => _selectedMinute = value,
+                    ),
+                          _updateTime(),
+                        }
+
                   ),
                 ),
               ],
