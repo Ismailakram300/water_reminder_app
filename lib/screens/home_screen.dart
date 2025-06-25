@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:water_reminder_app/customs_widgets/mytext.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -36,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffE4E4E4),
+      backgroundColor: Color(0xffEFF7FF),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
@@ -81,37 +82,142 @@ class _HomeScreenState extends State<HomeScreen> {
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-             SizedBox(
-            width: 120,
-              height: 180,
-              child: LiquidCustomProgressIndicator(
-                value: _counter,
-                valueColor: AlwaysStoppedAnimation(Colors.blue),
-                backgroundColor: const Color(0xff9ED1FF),
-                direction: Axis.vertical,
-                center: Text(
-                  '${(_counter * 100).toInt()}%',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 18,
+                SizedBox(
+                  width: 120,
+                  height: 180,
+                  child: LiquidCustomProgressIndicator(
+                    value: _counter,
+                    valueColor: AlwaysStoppedAnimation(Colors.blue),
+                    backgroundColor: const Color(0xff9ED1FF),
+                    direction: Axis.vertical,
+                    center: Text(
+                      '${(_counter * 100).toInt()}%',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
+                    shapePath: _buildRealWaterDropPath(),
                   ),
                 ),
-                shapePath: _buildRealWaterDropPath(),
-              ),
-            ),
                 TextButton(onPressed: Decrement, child: Text('zero')),
-                LinearPercentIndicator(
-                  width: MediaQuery.of(context).size.width - 50,
-                  animation: true,
-                  lineHeight: 20.0,
-                  animationDuration: 2000,
-                  percent: _counter,
-                  center: Text("90.0%"),
-                  barRadius: Radius.circular(12),
-                  linearStrokeCap: LinearStrokeCap.round,
-                  progressColor: Colors.blue,
+
+                Container(
+                  width: 320,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('$_per%', style: TextStyle()),
+                          Text('258ml', style: TextStyle()),
+                        ],
+                      ),
+                      LinearPercentIndicator(
+                        width: 320,
+
+                        animation: true,
+                        lineHeight: 15.0,
+                        animationDuration: 2000,
+                        percent: _counter,
+                        padding: EdgeInsets.all(0.0),
+                        barRadius: Radius.circular(5),
+                        backgroundColor: const Color(0xff9ED1FF),
+                        progressColor: Colors.blue,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Progress', style: TextStyle()),
+                          Text('Daily goal', style: TextStyle()),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: _incrementCounter,
+                        child: Container(
+                          height: 75,
+                          width: 320,
+
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5), // Shadow color
+                                spreadRadius: 2,   // How much it spreads
+                                blurRadius: 8,     // How blurry it looks
+                                offset: Offset(4, 4), // X and Y offset
+                              ),
+                            ],
+                            border: Border.all(color: Color(0xff585858), width: 1.5),
+                            borderRadius: BorderRadius.circular(100),
+                            color: Colors.white,
+                          ),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.add, color: Colors.blue, size: 40),
+                                Mytext(txt: 'DRINK', color: Colors.blue),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+
+                                child: Image.asset(
+                                  height: 60,
+                                  width: 50,
+                                  fit: BoxFit.fill,
+                                  'assets/images/glass-water.png',
+                                ),
+                                height: 50,
+                                width: 40,
+                              ),
+                              Column(
+                                children: [
+                                  Text(
+                                    'Water',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text('100ml'),
+                                ],
+                              ),
+                            ],
+                          ),
+                          InkWell(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(120),
+                                color: Color(0xff278DE8),
+                              ),
+                              width: 86,
+                              height: 31,
+                              child: Center(
+                                child: Mytext(
+                                  txt: "Edit",
+                                  size: 19,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
