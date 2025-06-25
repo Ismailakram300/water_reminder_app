@@ -5,6 +5,7 @@ import 'package:water_reminder_app/screens/time_step.dart';
 import 'package:water_reminder_app/screens/time_weakup.dart';
 import 'package:water_reminder_app/screens/weight_step.dart';
 
+import 'bottom_nav_bar.dart';
 import 'gender_step.dart';
 import 'onboarding_progress_header.dart';
 
@@ -28,7 +29,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     } else {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => BottomNavBar()),
       );
     }
   }
