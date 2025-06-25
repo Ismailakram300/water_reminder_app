@@ -76,6 +76,7 @@ flutter:
      - assets/images/wakeup.png
      - assets/images/weight.png
      - assets/images/app_drop.png
+     - assets/images/glass-water.png
 
   # An images asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

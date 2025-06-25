@@ -25,7 +25,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void nextStep() {
     if (currentStep < 3) {
       setState(() => currentStep++);
-    }else{
+    } else {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -60,7 +60,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         time: sleepTime,
         onTimeChanged: (val) => setState(() => sleepTime = val),
       ),
-
     ];
 
     return Scaffold(
@@ -84,24 +83,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  ?currentStep!= 0? Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Color(0xff278DE8),
-                    ),
-                    width: 45,
-                    height: 45,
-                    child:  InkWell(
-                      onTap: previousStep,
-                      child: Center(
-                        child: Icon(
-                          Icons.arrow_back_ios_rounded,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      ),
-                    ),
-                  ): Container(),
+                  ?currentStep != 0
+                      ? Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Color(0xff278DE8),
+                          ),
+                          width: 45,
+                          height: 45,
+                          child: InkWell(
+                            onTap: previousStep,
+                            child: Center(
+                              child: Icon(
+                                Icons.arrow_back_ios_rounded,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(9),
