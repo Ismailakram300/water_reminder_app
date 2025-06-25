@@ -33,30 +33,34 @@ class GenderStep extends StatelessWidget {
             GestureDetector(
               onTap: () => onChanged('Male'),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                     height: 130,
                     width: 130,
                     child: Image.asset('assets/images/male.png'),
                   ),
-                  Row(
-                   // mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Radio<String>(
-                        value: 'Male',
-                        groupValue: selectedGender,
-                        onChanged: (val) => onChanged(val!),
-                        activeColor: Colors.blue,
-                      ),
-                      Mytext(
-                        txt: 'Male',
-                        size: 15,
-                        color: selectedGender == 'Male'
-                            ? Color(0xff278DE8)
-                            : Color(0xff979797),
-                      ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0,0,11,0),
+                    child: Row(
+                     // mainAxisSize: MainAxisSize.min,
+                      children: [
+
+                        Radio<String>(
+                          value: 'Male',
+                          groupValue: selectedGender,
+                          onChanged: (val) => onChanged(val!),
+                          activeColor: Colors.blue,
+                        ),
+                        Mytext(
+                          txt: 'Male',
+                          size: 15,
+                          color: selectedGender == 'Male'
+                              ? Color(0xff278DE8)
+                              : Color(0xff979797),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -66,30 +70,32 @@ class GenderStep extends StatelessWidget {
             GestureDetector(
               onTap: () => onChanged('Female'),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     height: 130,
                     width: 130,
                     child: Image.asset('assets/images/female.png'),
                   ),
-                  Row(
-                    //mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Radio<String>(
-                        value: 'Female',
-                        groupValue: selectedGender,
-                        onChanged: (val) => onChanged(val!),
-                        activeColor: Colors.blue,
-                      ),
-                      Mytext(
-                        txt: 'Female',
-                        size: 15,
-                        color: selectedGender == 'Female'
-                            ? Color(0xff278DE8)
-                            : Color(0xff979797),
-                      ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0,0,12,0),
+                    child: Row(
+                      //mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Radio<String>(
+                          value: 'Female',
+                          groupValue: selectedGender,
+                          onChanged: (val) => onChanged(val!),
+                          activeColor: Colors.blue,
+                        ),
+                        Mytext(
+                          txt: 'Female',
+                          size: 15,
+                          color: selectedGender == 'Female'
+                              ? Color(0xff278DE8)
+                              : Color(0xff979797),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
