@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontSize: 18,
                       ),
                     ),
-                    shapePath: _buildRealWaterDropPath(),
+                    shapePath: _buildWaterDropPath(Size(150, 200)),
                   ),
                 ),
                 TextButton(onPressed: Decrement, child: Text('zero')),
@@ -174,14 +174,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Container(
 
+                                height: 50,
+                                width: 40,
                                 child: Image.asset(
                                   height: 60,
                                   width: 50,
                                   fit: BoxFit.fill,
                                   'assets/images/glass-water.png',
                                 ),
-                                height: 50,
-                                width: 40,
                               ),
                               Column(
                                 children: [
@@ -229,13 +229,16 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 /// This path looks like a real teardrop shape
-Path _buildRealWaterDropPath() {
+Path _buildWaterDropPath(Size size) {
+  final double w = size.width;
+  final double h = size.height;
+
   final Path path = Path();
-
-  path.moveTo(60, 0); // Start at top center
-  path.cubicTo(110, 30, 120, 100, 60, 180); // Right curve
-  path.cubicTo(0, 10, 10, 30, 60, 0); // Left curve
-
-  path.close(); // Close the path
+  path.moveTo(w * 0.5, 0);
+  path.quadraticBezierTo(w * 0.95, h * 0.35, w * 0.5, h);
+  path.quadraticBezierTo(w * 0.05, h * 0.35, w * 0.5, 0);
+  path.close();
   return path;
 }
+
+
