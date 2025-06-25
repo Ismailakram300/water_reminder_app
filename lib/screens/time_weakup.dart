@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:numberpicker/numberpicker.dart';
 import '../customs_widgets/mytext.dart';
 
-class TimeWakeup extends StatelessWidget {
+class TimeWakeup extends StatefulWidget {
   final String label;
   final TimeOfDay time;
   final ValueChanged<TimeOfDay> onTimeChanged;
@@ -14,30 +14,34 @@ class TimeWakeup extends StatelessWidget {
     required this.onTimeChanged,
   });
 
-  Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: time,
-    );
-    if (picked != null) onTimeChanged(picked);
-  }
+  @override
+  State<TimeWakeup> createState() => _TimeWakeupState();
+}
 
+class _TimeWakeupState extends State<TimeWakeup> {
+  late int _selectedHour = widget.time.hour;
+  late int _selectedMinute =  widget.time.minute;
+
+  void _updateTime() {
+    widget.onTimeChanged(TimeOfDay(
+      hour: _selectedHour,
+      minute: _selectedMinute,
+    ));
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const SizedBox(height: 30),
-
         Mytext(
           decoration: TextDecoration.underline,
-          txt: "Choose wake-up time",
+          txt: "Choose wake-up Time",
           size: 26,
         ),
         const SizedBox(height: 30),
-
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -47,23 +51,48 @@ class TimeWakeup extends StatelessWidget {
                 width: 200,
               ),
             ),
-            const SizedBox(height: 20),
-            GestureDetector(
-              onTap: () => _selectTime(context),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12,
-                  horizontal: 24,
+            const SizedBox(height: 2),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: NumberPicker(
+                    selectedTextStyle: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
+                    minValue: 0,
+                    maxValue: 23,
+                    itemHeight: 45,
+                    itemWidth: 40,
+                    value: _selectedHour,
+                    textStyle: TextStyle(color: Color(0xff6C6C6C), fontSize: 25),
+
+                    zeroPad: true,
+                    onChanged: (value) =>
+                        setState(() => _selectedHour = value),
+                  ),
                 ),
-                decoration: BoxDecoration(
-                  color: Colors.blue[100],
-                  borderRadius: BorderRadius.circular(12),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0,0,10,0),
+                  child: NumberPicker(
+                    selectedTextStyle: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
+                    minValue: 0,
+                    maxValue: 59,
+                    itemHeight: 45,
+                    itemWidth: 40,
+                    value: _selectedMinute,
+                    zeroPad: true,
+                    onChanged: (value) =>
+                        setState(() => _selectedMinute = value),
+                  ),
                 ),
-                child: Text(
-                  "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}",
-                  style: const TextStyle(fontSize: 22),
-                ),
-              ),
+              ],
             ),
           ],
         ),
