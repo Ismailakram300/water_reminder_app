@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -101,6 +102,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
                 TextButton(onPressed: Decrement, child: Text('zero')),
+                LinearPercentIndicator(
+                  width: MediaQuery.of(context).size.width - 50,
+                  animation: true,
+                  lineHeight: 20.0,
+                  animationDuration: 2000,
+                  percent: _counter,
+                  center: Text("90.0%"),
+                  barRadius: Radius.circular(12),
+                  linearStrokeCap: LinearStrokeCap.round,
+                  progressColor: Colors.blue,
+                ),
               ],
             ),
           ),
