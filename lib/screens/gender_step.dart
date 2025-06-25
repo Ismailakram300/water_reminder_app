@@ -25,7 +25,7 @@ class GenderStep extends StatelessWidget {
             size: 26,
           ),
         ),
-        const SizedBox(height: 70),
+        const SizedBox(height: 50),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -33,35 +33,30 @@ class GenderStep extends StatelessWidget {
             GestureDetector(
               onTap: () => onChanged('Male'),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
-                    child: Container(
-                      height: 130,
-                      width: 130,
-                      child: Image.asset('assets/images/male.png'),
-                    ),
+                  Container(
+                    height: 130,
+                    width: 130,
+                    child: Image.asset('assets/images/male.png'),
                   ),
-                  Center(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Radio<String>(
-                          value: 'Male',
-                          groupValue: selectedGender,
-                          onChanged: (val) => onChanged(val!),
-                          activeColor: Colors.blue,
-                        ),
-                        Mytext(
-                          txt: 'Male',
-                          size: 15,
-                          color: selectedGender == 'Male'
-                              ? Color(0xff278DE8)
-                              : Color(0xff979797),
-                        ),
-                      ],
-                    ),
+                  Row(
+                   // mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Radio<String>(
+                        value: 'Male',
+                        groupValue: selectedGender,
+                        onChanged: (val) => onChanged(val!),
+                        activeColor: Colors.blue,
+                      ),
+                      Mytext(
+                        txt: 'Male',
+                        size: 15,
+                        color: selectedGender == 'Male'
+                            ? Color(0xff278DE8)
+                            : Color(0xff979797),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -71,35 +66,30 @@ class GenderStep extends StatelessWidget {
             GestureDetector(
               onTap: () => onChanged('Female'),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
-                    child: Container(
-                      height: 130,
-                      width: 130,
-                      child: Image.asset('assets/images/female.png'),
-                    ),
+                  Container(
+                    height: 130,
+                    width: 130,
+                    child: Image.asset('assets/images/female.png'),
                   ),
-                  Center(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Radio<String>(
-                          value: 'Female',
-                          groupValue: selectedGender,
-                          onChanged: (val) => onChanged(val!),
-                          activeColor: Colors.blue,
-                        ),
-                        Mytext(
-                          txt: 'Female',
-                          size: 15,
-                          color: selectedGender == 'Female'
-                              ? Color(0xff278DE8)
-                              : Color(0xff979797),
-                        ),
-                      ],
-                    ),
+                  Row(
+                    //mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Radio<String>(
+                        value: 'Female',
+                        groupValue: selectedGender,
+                        onChanged: (val) => onChanged(val!),
+                        activeColor: Colors.blue,
+                      ),
+                      Mytext(
+                        txt: 'Female',
+                        size: 15,
+                        color: selectedGender == 'Female'
+                            ? Color(0xff278DE8)
+                            : Color(0xff979797),
+                      ),
+                    ],
                   ),
                 ],
               ),
