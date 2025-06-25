@@ -81,20 +81,25 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(
-                  child: LiquidCustomProgressIndicator(
-                    value: _counter,
-                    valueColor: AlwaysStoppedAnimation(Colors.blue),
-                    backgroundColor: Color(0xff9ED1FF),
-
-                    // borderColor: Colors.red,
-                    // borderWidth: 5.0,
-                    // borderRadius: 12.0,
-                    direction: Axis.vertical,
-                    center: Text('$_per %'),
-                    shapePath: _buildGlassPath(),
+             SizedBox(
+            width: 120,
+              height: 180,
+              child: LiquidCustomProgressIndicator(
+                value: _counter,
+                valueColor: AlwaysStoppedAnimation(Colors.blue),
+                backgroundColor: const Color(0xff9ED1FF),
+                direction: Axis.vertical,
+                center: Text(
+                  '${(_counter * 100).toInt()}%',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 18,
                   ),
                 ),
+                shapePath: _buildRealWaterDropPath(),
+              ),
+            ),
                 TextButton(onPressed: Decrement, child: Text('zero')),
               ],
             ),
@@ -105,24 +110,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-Path _buildGlassPath() {
-  Path path = Path();
+/// This path looks like a real teardrop shape
+Path _buildRealWaterDropPath() {
+  final Path path = Path();
 
-  // Start at top-left of the glass
-  path.moveTo(310, 0); // top-left
+  path.moveTo(60, 0); // Start at top center
+  path.cubicTo(110, 30, 120, 100, 60, 180); // Right curve
+  path.cubicTo(0, 10, 10, 30, 60, 0); // Left curve
 
-  // Top rim
-  path.lineTo(260, 0); // top-right
-
-  // Right side slant
-  path.lineTo(230, 280); // bottom-right slant
-
-  // Bottom curve
-  path.quadraticBezierTo(100, 270, 80, 280); // center curve
-
-  // Left side slant
-  path.lineTo(60, 0); // back to top-left
-
-  path.close();
+  path.close(); // Close the path
   return path;
 }
