@@ -28,41 +28,35 @@ class GenderStep extends StatelessWidget {
         const SizedBox(height: 70),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: ['Male', 'Female'].map((gender) {
-            bool isSelected = selectedGender == gender;
-            String imagePath = gender == 'Male'
-                ? 'assets/images/male.png'
-                : 'assets/images/female.png';
-
-            return GestureDetector(
-              onTap: () => onChanged(gender),
+          children: [
+            // Male
+            GestureDetector(
+              onTap: () => onChanged('Male'),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(25,0,0,0),
+                    padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
                     child: Container(
                       height: 130,
                       width: 130,
-                      child: Image.asset(imagePath),
+                      child: Image.asset('assets/images/male.png'),
                     ),
                   ),
-
-                  // 🔧 Fixed: center the row
                   Center(
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Radio<String>(
-                          value: gender,
+                          value: 'Male',
                           groupValue: selectedGender,
                           onChanged: (val) => onChanged(val!),
                           activeColor: Colors.blue,
                         ),
                         Mytext(
-                          txt: gender,
+                          txt: 'Male',
                           size: 15,
-                          color: isSelected
+                          color: selectedGender == 'Male'
                               ? Color(0xff278DE8)
                               : Color(0xff979797),
                         ),
@@ -71,11 +65,48 @@ class GenderStep extends StatelessWidget {
                   ),
                 ],
               ),
-            );
+            ),
 
-
-          }).toList(),
+            // Female
+            GestureDetector(
+              onTap: () => onChanged('Female'),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
+                    child: Container(
+                      height: 130,
+                      width: 130,
+                      child: Image.asset('assets/images/female.png'),
+                    ),
+                  ),
+                  Center(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Radio<String>(
+                          value: 'Female',
+                          groupValue: selectedGender,
+                          onChanged: (val) => onChanged(val!),
+                          activeColor: Colors.blue,
+                        ),
+                        Mytext(
+                          txt: 'Female',
+                          size: 15,
+                          color: selectedGender == 'Female'
+                              ? Color(0xff278DE8)
+                              : Color(0xff979797),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
+
       ],
     );
 
