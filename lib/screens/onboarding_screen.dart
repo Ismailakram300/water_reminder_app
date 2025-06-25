@@ -84,14 +84,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Container(
+                  ?currentStep!= 0? Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
                       color: Color(0xff278DE8),
                     ),
                     width: 45,
                     height: 45,
-                    child: InkWell(
+                    child:  InkWell(
                       onTap: previousStep,
                       child: Center(
                         child: Icon(
@@ -101,7 +101,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         ),
                       ),
                     ),
-                  ),
+                  ): Container(),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(9),
