@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:water_reminder_app/screens/reminder.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -7,7 +8,6 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
-
   // void _showSoundPicker(BuildContext context) {
   //   showModalBottomSheet(
   //     context: context,
@@ -59,7 +59,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String selectedSound = "Chime";
   void _showSoundPicker(BuildContext context) {
     List<String> sounds = ["Chime", "Bell", "Beep", "Drop"];
-    String tempSelectedSound = selectedSound; // to update temporarily inside dialog
+    String tempSelectedSound =
+        selectedSound; // to update temporarily inside dialog
 
     showDialog(
       context: context,
@@ -107,7 +108,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -119,9 +119,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-          _buildSectionTitle("General", ),
-         _buildSettingsTile("Reminder Sound", onTap: () => _showSoundPicker(context)),
-          _buildSettingsTile("Reminder"),
+          _buildSectionTitle("General"),
+          _buildSettingsTile(
+            "Reminder Sound",
+            onTap: () => _showSoundPicker(context),
+          ),
+          _buildSettingsTile(
+            "Reminder",
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ReminderScreen()),
+            ),
+          ),
           _buildSettingsTile("Daily Goal"),
 
           SizedBox(height: 20),
@@ -138,8 +147,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _buildSettingsTile("Share"),
         ],
       ),
-
-
     );
   }
 
@@ -158,7 +165,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildSettingsTile(String label,{VoidCallback? onTap}) {
+  Widget _buildSettingsTile(String label, {VoidCallback? onTap}) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ListTile(

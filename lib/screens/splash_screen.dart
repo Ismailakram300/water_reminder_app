@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../customs_widgets/mytext.dart';
+import 'bottom_nav_bar.dart';
 import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -13,15 +15,39 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    //TODO: implement initState
-    Timer(Duration(seconds: 4), () {
-      Navigator.push(
+
+
+  Future<void> _checkSession() async {
+    await Future.delayed(Duration(seconds: 5)); // Optional: splash delay
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool hasCompletedOnboarding = prefs.getBool('onboardingComplete') ?? false;
+    print(hasCompletedOnboarding);
+
+    if (hasCompletedOnboarding) {
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => OnboardingScreen()),
       );
-    });
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => OnboardingScreen()),
+      );
+    }
+  }
+  @override
+  void initState() {
+    // //TODO: implement initState
+    // Timer(Duration(seconds: 4), () async{
+    //
+    //   SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   bool seen= prefs.getBool('_isonboardingComplete')?? false;
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => OnboardingScreen()),
+    //   );
+    // });
+    _checkSession();
   }
 
   Widget build(BuildContext context) {

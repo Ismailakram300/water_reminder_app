@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:water_reminder_app/customs_widgets/mytext.dart';
 import 'package:water_reminder_app/screens/home_screen.dart';
 import 'package:water_reminder_app/screens/time_step.dart';
 import 'package:water_reminder_app/screens/time_weakup.dart';
 import 'package:water_reminder_app/screens/weight_step.dart';
 
+import '../Database/database_helper.dart';
 import 'bottom_nav_bar.dart';
 import 'gender_step.dart';
 import 'onboarding_progress_header.dart';
@@ -17,16 +19,31 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+
+  bool onboardingComplete=false;
   int currentStep = 0;
   String selectedGender = 'Male';
   int selectedWeight = 40;
   TimeOfDay wakeUpTime = const TimeOfDay(hour: 6, minute: 0);
   TimeOfDay sleepTime = const TimeOfDay(hour: 6, minute: 0);
 
-  void nextStep() {
+  void completeOnboarding() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onboardingComplete', true);
+  }
+  void nextStep() async {
     if (currentStep < 3) {
       setState(() => currentStep++);
     } else {
+      await DatabaseHelper.instance.saveUserData(
+        gender: selectedGender,
+        weight: selectedWeight,
+        wakeUp: wakeUpTime.format(context),
+        sleep: sleepTime.format(context),
+      );
+      checkUserData();
+      completeOnboarding();
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => BottomNavBar()),
@@ -40,6 +57,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
   }
 
+  void checkUserData() async {
+    final data = await DatabaseHelper.instance.getUserData();
+    if (data != null) {
+      print("✔️ Data Found in DB:");
+      print("Gender: ${data['gender']}");
+      print("Weight: ${data['weight']}");
+      print("Wake-up Time: ${data['wakeUpTime']}");
+      print("Sleep Time: ${data['sleepTime']}");
+    } else {
+      print("❌ No user data found in database.");
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final steps = [
