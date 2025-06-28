@@ -71,7 +71,8 @@ class _TimeWakeupState extends State<TimeWakeup> {
 
                     zeroPad: true,
                     onChanged: (value) =>
-                        setState(() => _selectedHour = value),
+                    { setState(() => _selectedHour = value),
+                      _updateTime()},
                   ),
                 ),
                 Padding(
