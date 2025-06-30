@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:water_reminder_app/screens/splash_screen.dart';
 
-void main() {
+import 'Database/database_helper.dart';
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.black,
   //  statusBarIconBrightness: Brightness.dark,
