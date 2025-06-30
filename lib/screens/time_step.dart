@@ -19,21 +19,22 @@ class TimeStep extends StatefulWidget {
 }
 
 class _TimeStepState extends State<TimeStep> {
-  late int _selectedHour ;
-  late int _selectedMinute ;
+  late int _selectedHour;
+  late int _selectedMinute;
 
-  void initState(){
+  void initState() {
     setState(() {
-      _selectedHour=widget.time.hour;
-      _selectedMinute=widget.time.minute;
+      _selectedHour = widget.time.hour;
+      _selectedMinute = widget.time.minute;
     });
   }
+
   void _updateTime() {
-    widget.onTimeChanged(TimeOfDay(
-      hour: _selectedHour,
-      minute: _selectedMinute,
-    ));
+    widget.onTimeChanged(
+      TimeOfDay(hour: _selectedHour, minute: _selectedMinute),
+    );
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -47,7 +48,7 @@ class _TimeStepState extends State<TimeStep> {
         const SizedBox(height: 30),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-         // crossAxisAlignment: CrossAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -73,16 +74,20 @@ class _TimeStepState extends State<TimeStep> {
                     itemHeight: 45,
                     itemWidth: 40,
                     value: _selectedHour,
-                    textStyle: TextStyle(color: Color(0xff6C6C6C), fontSize: 25),
+                    textStyle: TextStyle(
+                      color: Color(0xff6C6C6C),
+                      fontSize: 25,
+                    ),
 
                     zeroPad: true,
-                    onChanged: (value) =>
-                    {setState(() => _selectedHour = value),
-                    _updateTime()},
+                    onChanged: (value) => {
+                      setState(() => _selectedHour = value),
+                      _updateTime(),
+                    },
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0,0,10,0),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                   child: NumberPicker(
                     selectedTextStyle: TextStyle(
                       fontSize: 25,
@@ -95,13 +100,10 @@ class _TimeStepState extends State<TimeStep> {
                     itemWidth: 40,
                     value: _selectedMinute,
                     zeroPad: true,
-                    onChanged: (value) =>
-                        {
-                    setState(() => _selectedMinute = value,
-                    ),
-                          _updateTime(),
-                        }
-
+                    onChanged: (value) => {
+                      setState(() => _selectedMinute = value),
+                      _updateTime(),
+                    },
                   ),
                 ),
               ],

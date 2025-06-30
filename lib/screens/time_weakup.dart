@@ -90,7 +90,8 @@ class _TimeWakeupState extends State<TimeWakeup> {
                     value: _selectedMinute,
                     zeroPad: true,
                     onChanged: (value) =>
-                        setState(() => _selectedMinute = value),
+                    {setState(() => _selectedMinute = value),
+                    _updateTime()},
                   ),
                 ),
               ],
