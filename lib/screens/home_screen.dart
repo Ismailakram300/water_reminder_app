@@ -20,8 +20,10 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _loadImageFromDatabase();
   }
+
   String selectedImage = 'assets/images/glass-water.png'; // default image
   int selectedMl = 100;
+  int dailyGoal = 250;
   // List<String> imageOptions = [
   //   'assets/images/glass-water.png',
   //   'assets/images/bottle.png',
@@ -31,10 +33,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _loadImageFromDatabase() async {
     final data = await DatabaseHelper.instance.getUserData();
     if (data != null) {
-      print("Loaded from DB: ${data['selectedImage']} | ml: ${data['selectedMl']}"); // Debug log
+      print(
+        "Loaded from DB: ${data['selectedImage']} | ml: ${data['selectedMl']} | dailyGoal: ${data['dailyGoal']}",
+      ); // Debug log
       setState(() {
-        selectedImage = data['selectedImage'] ?? 'assets/images/glass-water.png';
+        selectedImage =
+            data['selectedImage'] ?? 'assets/images/glass-water.png';
         selectedMl = data['selectedMl'] ?? 100;
+        dailyGoal=data['dailyGoal'] ?? 250;
       });
     }
   }
@@ -154,20 +160,20 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           title: Text("Select Drink"),
           content: StatefulBuilder(
-
             builder: (context, setModalState) {
               return SingleChildScrollView(
-                child: SizedBox(
-                  height: 200,
-                  child: Column(
-
-                    children: [
-                      GridView.count(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    SizedBox(
+                      height: 250, // ✅ give it a height
+                      child: GridView.count(
                         shrinkWrap: true,
                         crossAxisCount: 3,
-                        crossAxisSpacing: 12,
+                        crossAxisSpacing: 8,
                         mainAxisSpacing: 12,
                         children: drinkOptions.map((option) {
                           final isSelected = tempSelectedMl == option.ml;
@@ -179,10 +185,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               });
                             },
                             child: Container(
-                              height: 8,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: isSelected ? Colors.blue : Colors.grey,
+                                  color: isSelected
+                                      ? Colors.blue
+                                      : Colors.grey.shade200,
                                   width: isSelected ? 2 : 1,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
@@ -199,36 +206,60 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         }).toList(),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               );
             },
           ),
           actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Cancel
+            InkWell(
+              onTap: () async {
+                Navigator.pop(context);
               },
-              child: Text("CANCEL"),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.blue),
+                  //  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+
+                height: 40,
+                width: 70,
+                child: Center(
+                  child: Text(
+                    "CANCEL",
+                    style: TextStyle(color: Colors.grey.shade400),
+                  ),
+                ),
+              ),
             ),
-            ElevatedButton(
-              onPressed: () async {
+            SizedBox(width: 10),
+            InkWell(
+              onTap: () async {
                 if (tempSelectedMl != null && tempSelectedImage != null) {
                   setState(() {
                     selectedMl = tempSelectedMl!;
                     selectedImage = tempSelectedImage!;
                   });
 
-                  await _saveImageAndMlToDatabase(
-                    selectedImage,
-                    selectedMl,
-                  );
+                  await _saveImageAndMlToDatabase(selectedImage, selectedMl);
 
-                  Navigator.pop(context); // Close dialog
+                  Navigator.pop(context);
                 }
               },
-              child: Text("OK"),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+
+                height: 40,
+                width: 70,
+                child: Center(
+                  child: Text("OK", style: TextStyle(color: Colors.white)),
+                ),
+              ),
             ),
           ],
         );
@@ -332,7 +363,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('$_per%', style: TextStyle()),
-                          Text('258ml', style: TextStyle()),
+                          Text('$dailyGoal'+'ml', style: TextStyle()),
                         ],
                       ),
                       LinearPercentIndicator(
@@ -364,9 +395,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.grey.withOpacity(0.5), // Shadow color
-                                spreadRadius: 2,   // How much it spreads
-                                blurRadius: 8,     // How blurry it looks
+                                color: Colors.grey.withOpacity(
+                                  0.5,
+                                ), // Shadow color
+                                spreadRadius: 2, // How much it spreads
+                                blurRadius: 8, // How blurry it looks
                                 offset: Offset(4, 4), // X and Y offset
                               ),
                             ],
@@ -379,7 +412,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.add, color: Colors.blue, size: 35),
-                                Mytext(txt: 'DRINK', color: Colors.blue,size: 26,),
+                                Mytext(
+                                  txt: 'DRINK',
+                                  color: Colors.blue,
+                                  size: 26,
+                                ),
                               ],
                             ),
                           ),
@@ -392,7 +429,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           Row(
                             children: [
                               Container(
-
                                 height: 50,
                                 width: 40,
                                 child: Image.asset(
@@ -455,11 +491,22 @@ Path _buildWaterDropPath(Size size) {
 
   final Path path = Path();
   path.moveTo(width * 0.5, 0);
-  path.cubicTo(width * 0.9, height * 0.3, width * 0.9, height * 0.7, width * 0.5, height);
-  path.cubicTo(width * 0.1, height * 0.7, width * 0.1, height * 0.3, width * 0.5, 0);
+  path.cubicTo(
+    width * 0.9,
+    height * 0.3,
+    width * 0.9,
+    height * 0.7,
+    width * 0.5,
+    height,
+  );
+  path.cubicTo(
+    width * 0.1,
+    height * 0.7,
+    width * 0.1,
+    height * 0.3,
+    width * 0.5,
+    0,
+  );
   path.close();
   return path;
 }
-
-
-
