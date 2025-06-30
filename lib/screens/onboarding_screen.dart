@@ -40,6 +40,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         weight: selectedWeight,
         wakeUp: wakeUpTime.format(context),
         sleep: sleepTime.format(context),
+        dailyGoal: 250,
       );
       checkUserData();
       completeOnboarding();
@@ -63,6 +64,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       print("✔️ Data Found in DB:");
       print("Gender: ${data['gender']}");
       print("Weight: ${data['weight']}");
+      print("Weight: ${data['dailyGoal']}");
       print("Wake-up Time: ${data['wakeUpTime']}");
       print("Sleep Time: ${data['sleepTime']}");
     } else {
