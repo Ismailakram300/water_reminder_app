@@ -13,6 +13,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffEFF7FF),
       appBar: AppBar(
         title: Text("Reminder"),
         leading: IconButton(
