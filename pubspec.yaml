@@ -82,6 +82,15 @@ flutter:
      - assets/images/weight.png
      - assets/images/app_drop.png
      - assets/images/glass-water.png
+     - assets/images/50ml.png
+     - assets/images/100ml.png
+     - assets/images/250ml.png
+     - assets/images/200ml.png
+     - assets/images/300ml.png
+     - assets/images/400ml.png
+     - assets/images/350ml.png
+     - assets/images/450ml.png
+
 
   # An images asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
