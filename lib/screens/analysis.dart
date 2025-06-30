@@ -107,7 +107,7 @@ class _AnalysisState extends State<Analysis> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xffFAFBFE),
       appBar: AppBar(
         backgroundColor: Colors.lightBlue[300],
         elevation: 0,
