@@ -5,6 +5,9 @@ import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:water_reminder_app/customs_widgets/mytext.dart';
 
+import '../Database/database_helper.dart';
+import '../Models/drink_options.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -13,6 +16,133 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  void initState() {
+    super.initState();
+    _loadImageFromDatabase();
+  }
+  String selectedImage = 'assets/images/glass-water.png'; // default image
+  int selectedMl = 100;
+  List<String> imageOptions = [
+    'assets/images/glass-water.png',
+    'assets/images/bottle.png',
+    'assets/images/cup.png',
+    'assets/images/mug.png',
+  ];
+  Future<void> _loadImageFromDatabase() async {
+    final data = await DatabaseHelper.instance.getUserData();
+    if (data != null) {
+      setState(() {
+        selectedImage = data['selectedImage'] ?? 'assets/images/glass-water.png';
+        selectedMl = data['selectedMl'] ?? 100;
+      });
+    }
+  }
+  Future<void> _saveImageAndMlToDatabase(String imagePath, int ml) async {
+    final existingData = await DatabaseHelper.instance.getUserData();
+    if (existingData != null) {
+      await DatabaseHelper.instance.saveUserData(
+        gender: existingData['gender'],
+        weight: existingData['weight'],
+        dailyGoal: existingData['dailyGoal'],
+        wakeUp: existingData['wakeUpTime'],
+        sleep: existingData['sleepTime'],
+        selectedImage: imagePath,
+        selectedMl: ml,
+      );
+    }
+  }
+
+  void _showDrinkSelector() {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+      ),
+      builder: (BuildContext context) {
+        int? tempSelectedMl = selectedMl;
+        String? tempSelectedImage = selectedImage;
+
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text("Select Drink", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 16),
+                  GridView.count(
+                    shrinkWrap: true,
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    children: drinkOptions.map((option) {
+                      final isSelected = tempSelectedMl == option.ml;
+                      return GestureDetector(
+                        onTap: () {
+                          setModalState(() {
+                            tempSelectedMl = option.ml;
+                            tempSelectedImage = option.imagePath;
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: isSelected ? Colors.blue : Colors.grey,
+                              width: isSelected ? 2 : 1,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(option.imagePath, height: 40),
+                              SizedBox(height: 8),
+                              Text('${option.ml}ml'),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      OutlinedButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text("CANCEL"),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          if (tempSelectedMl != null && tempSelectedImage != null) {
+                            setState(() {
+                              selectedMl = tempSelectedMl!;
+                              selectedImage = tempSelectedImage!;
+                            });
+
+                            // ✅ Save to database here
+                            await _saveImageAndMlToDatabase(
+                              selectedImage,
+                              selectedMl,
+                            );
+
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: Text("OK"),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   double _counter = 0.1;
   int _per = 0;
 
@@ -30,6 +160,64 @@ class _HomeScreenState extends State<HomeScreen> {
       _per = _per - 10;
     });
   }
+  // Future<void> _loadImageFromDatabase() async {
+  //   final data = await DatabaseHelper.instance.getUserData();
+  //   if (data != null && data['selectedImage'] != null) {
+  //     setState(() {
+  //       selectedImage = data['selectedImage'];
+  //     });
+  //   }
+  // }
+
+  // Future<void> _saveImageToDatabase(String imagePath) async {
+  //   final existingData = await DatabaseHelper.instance.getUserData();
+  //   if (existingData != null) {
+  //     await DatabaseHelper.instance.saveUserData(
+  //       gender: existingData['gender'],
+  //       weight: existingData['weight'],
+  //       dailyGoal: existingData['dailyGoal'],
+  //       wakeUp: existingData['wakeUpTime'],
+  //       sleep: existingData['sleepTime'],
+  //       selectedImage: imagePath,
+  //     );
+  //   }
+  // }
+  // void _showImagePicker() {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     builder: (_) {
+  //       return Container(
+  //         padding: EdgeInsets.all(16),
+  //         height: 200,
+  //         child: GridView.count(
+  //           crossAxisCount: 4,
+  //           children: imageOptions.map((img) {
+  //             return GestureDetector(
+  //               onTap: () async {
+  //                 setState(() {
+  //                   selectedImage = img;
+  //                 });
+  //                 await _saveImageToDatabase(img);
+  //                 Navigator.pop(context); // close bottom sheet
+  //               },
+  //               child: Container(
+  //                 margin: EdgeInsets.all(8),
+  //                 decoration: BoxDecoration(
+  //                   border: Border.all(
+  //                     color: selectedImage == img ? Colors.blue : Colors.grey,
+  //                     width: 2,
+  //                   ),
+  //                   borderRadius: BorderRadius.circular(8),
+  //                 ),
+  //                 child: Image.asset(img),
+  //               ),
+  //             );
+  //           }).toList(),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   final now = DateTime.now();
   final day = DateFormat('EEEE').format(DateTime.now()); // e.g., Friday
@@ -180,7 +368,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   height: 60,
                                   width: 50,
                                   fit: BoxFit.fill,
-                                  'assets/images/glass-water.png',
+                                  selectedImage,
                                 ),
                               ),
                               Column(
@@ -192,12 +380,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  Text('100ml'),
+                                  Text('$selectedMl'),
                                 ],
                               ),
                             ],
                           ),
                           InkWell(
+                            onTap: _showDrinkSelector,
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(120),
