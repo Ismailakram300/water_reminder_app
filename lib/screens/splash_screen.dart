@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:water_reminder_app/screens/home_screen.dart';
 
+import '../Database/database_helper.dart';
 import '../customs_widgets/mytext.dart';
 import 'bottom_nav_bar.dart';
 import 'onboarding_screen.dart';
@@ -24,11 +26,15 @@ class _SplashScreenState extends State<SplashScreen> {
     print(hasCompletedOnboarding);
 
     if (hasCompletedOnboarding) {
+    //  await DatabaseHelper.instance.deleteDatabaseFile();
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => OnboardingScreen()),
+        MaterialPageRoute(builder: (context) => BottomNavBar()),
       );
     } else {
+    //  final db = await DatabaseHelper.instance.database;
+//await db.execute('ALTER TABLE user_data ADD COLUMN selectedMl INTEGER');
+      //await DatabaseHelper.instance.deleteDatabaseFile();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => OnboardingScreen()),
