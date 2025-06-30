@@ -155,20 +155,20 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Select Drink"),
-          content: SizedBox(
-            height: 300,
-            width: 200,
-            child: StatefulBuilder(
-              builder: (context, setModalState) {
-                return SingleChildScrollView(
+          content: StatefulBuilder(
+
+            builder: (context, setModalState) {
+              return SingleChildScrollView(
+                child: SizedBox(
+                  height: 200,
                   child: Column(
 
                     children: [
                       GridView.count(
                         shrinkWrap: true,
                         crossAxisCount: 3,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
                         children: drinkOptions.map((option) {
                           final isSelected = tempSelectedMl == option.ml;
                           return GestureDetector(
@@ -179,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               });
                             },
                             child: Container(
-
+                              height: 8,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: isSelected ? Colors.blue : Colors.grey,
@@ -201,9 +201,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
           actions: [
             TextButton(
