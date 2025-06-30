@@ -22,24 +22,27 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   String selectedImage = 'assets/images/glass-water.png'; // default image
   int selectedMl = 100;
-  List<String> imageOptions = [
-    'assets/images/glass-water.png',
-    'assets/images/bottle.png',
-    'assets/images/cup.png',
-    'assets/images/mug.png',
-  ];
+  // List<String> imageOptions = [
+  //   'assets/images/glass-water.png',
+  //   'assets/images/bottle.png',
+  //   'assets/images/cup.png',
+  //   'assets/images/mug.png',
+  // ];
   Future<void> _loadImageFromDatabase() async {
     final data = await DatabaseHelper.instance.getUserData();
     if (data != null) {
+      print("Loaded from DB: ${data['selectedImage']} | ml: ${data['selectedMl']}"); // Debug log
       setState(() {
         selectedImage = data['selectedImage'] ?? 'assets/images/glass-water.png';
         selectedMl = data['selectedMl'] ?? 100;
       });
     }
   }
+
   Future<void> _saveImageAndMlToDatabase(String imagePath, int ml) async {
     final existingData = await DatabaseHelper.instance.getUserData();
     if (existingData != null) {
+      print("Saving image: $imagePath | ml: $ml"); // Debug log
       await DatabaseHelper.instance.saveUserData(
         gender: existingData['gender'],
         weight: existingData['weight'],
@@ -52,92 +55,182 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  // void _showDrinkSelector() {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     shape: RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+  //     ),
+  //     builder: (BuildContext context) {
+  //       int? tempSelectedMl = selectedMl;
+  //       String? tempSelectedImage = selectedImage;
+  //
+  //       return StatefulBuilder(
+  //         builder: (context, setModalState) {
+  //           return Padding(
+  //             padding: const EdgeInsets.all(16.0),
+  //             child: Column(
+  //               mainAxisSize: MainAxisSize.min,
+  //               children: [
+  //                 Text("Select Drink", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+  //                 const SizedBox(height: 16),
+  //                 GridView.count(
+  //                   shrinkWrap: true,
+  //                   crossAxisCount: 3,
+  //                   crossAxisSpacing: 10,
+  //                   mainAxisSpacing: 10,
+  //                   children: drinkOptions.map((option) {
+  //                     final isSelected = tempSelectedMl == option.ml;
+  //                     return GestureDetector(
+  //                       onTap: () {
+  //                         setModalState(() {
+  //                           tempSelectedMl = option.ml;
+  //                           tempSelectedImage = option.imagePath;
+  //                         });
+  //                       },
+  //                       child: Container(
+  //                         decoration: BoxDecoration(
+  //                           border: Border.all(
+  //                             color: isSelected ? Colors.blue : Colors.grey,
+  //                             width: isSelected ? 2 : 1,
+  //                           ),
+  //                           borderRadius: BorderRadius.circular(12),
+  //                         ),
+  //                         child: Column(
+  //                           mainAxisAlignment: MainAxisAlignment.center,
+  //                           children: [
+  //                             Image.asset(option.imagePath, height: 40),
+  //                             SizedBox(height: 8),
+  //                             Text('${option.ml}ml'),
+  //                           ],
+  //                         ),
+  //                       ),
+  //                     );
+  //                   }).toList(),
+  //                 ),
+  //                 SizedBox(height: 16),
+  //                 Row(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                   children: [
+  //                     OutlinedButton(
+  //                       onPressed: () => Navigator.pop(context),
+  //                       child: Text("CANCEL"),
+  //                     ),
+  //                     ElevatedButton(
+  //                       onPressed: () async {
+  //                         if (tempSelectedMl != null && tempSelectedImage != null) {
+  //                           setState(() {
+  //                             selectedMl = tempSelectedMl!;
+  //                             selectedImage = tempSelectedImage!;
+  //                           });
+  //
+  //                           // ✅ Save to database here
+  //                           await _saveImageAndMlToDatabase(
+  //                             selectedImage,
+  //                             selectedMl,
+  //                           );
+  //
+  //                           Navigator.pop(context);
+  //                         }
+  //                       },
+  //                       child: Text("OK"),
+  //                     ),
+  //                   ],
+  //                 )
+  //               ],
+  //             ),
+  //           );
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
+
   void _showDrinkSelector() {
-    showModalBottomSheet(
+    int? tempSelectedMl = selectedMl;
+    String? tempSelectedImage = selectedImage;
+
+    showDialog(
       context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-      ),
       builder: (BuildContext context) {
-        int? tempSelectedMl = selectedMl;
-        String? tempSelectedImage = selectedImage;
+        return AlertDialog(
+          title: Text("Select Drink"),
+          content: SizedBox(
+            height: 300,
+            width: 200,
+            child: StatefulBuilder(
+              builder: (context, setModalState) {
+                return SingleChildScrollView(
+                  child: Column(
 
-        return StatefulBuilder(
-          builder: (context, setModalState) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("Select Drink", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 16),
-                  GridView.count(
-                    shrinkWrap: true,
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    children: drinkOptions.map((option) {
-                      final isSelected = tempSelectedMl == option.ml;
-                      return GestureDetector(
-                        onTap: () {
-                          setModalState(() {
-                            tempSelectedMl = option.ml;
-                            tempSelectedImage = option.imagePath;
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: isSelected ? Colors.blue : Colors.grey,
-                              width: isSelected ? 2 : 1,
-                            ),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(option.imagePath, height: 40),
-                              SizedBox(height: 8),
-                              Text('${option.ml}ml'),
-                            ],
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                  SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      OutlinedButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text("CANCEL"),
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          if (tempSelectedMl != null && tempSelectedImage != null) {
-                            setState(() {
-                              selectedMl = tempSelectedMl!;
-                              selectedImage = tempSelectedImage!;
-                            });
+                      GridView.count(
+                        shrinkWrap: true,
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        children: drinkOptions.map((option) {
+                          final isSelected = tempSelectedMl == option.ml;
+                          return GestureDetector(
+                            onTap: () {
+                              setModalState(() {
+                                tempSelectedMl = option.ml;
+                                tempSelectedImage = option.imagePath;
+                              });
+                            },
+                            child: Container(
 
-                            // ✅ Save to database here
-                            await _saveImageAndMlToDatabase(
-                              selectedImage,
-                              selectedMl,
-                            );
-
-                            Navigator.pop(context);
-                          }
-                        },
-                        child: Text("OK"),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: isSelected ? Colors.blue : Colors.grey,
+                                  width: isSelected ? 2 : 1,
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(option.imagePath, height: 39),
+                                  SizedBox(height: 8),
+                                  Text('${option.ml}ml'),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ],
-                  )
-                ],
-              ),
-            );
-          },
+                  ),
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Cancel
+              },
+              child: Text("CANCEL"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (tempSelectedMl != null && tempSelectedImage != null) {
+                  setState(() {
+                    selectedMl = tempSelectedMl!;
+                    selectedImage = tempSelectedImage!;
+                  });
+
+                  await _saveImageAndMlToDatabase(
+                    selectedImage,
+                    selectedMl,
+                  );
+
+                  Navigator.pop(context); // Close dialog
+                }
+              },
+              child: Text("OK"),
+            ),
+          ],
         );
       },
     );
@@ -160,64 +253,6 @@ class _HomeScreenState extends State<HomeScreen> {
       _per = _per - 10;
     });
   }
-  // Future<void> _loadImageFromDatabase() async {
-  //   final data = await DatabaseHelper.instance.getUserData();
-  //   if (data != null && data['selectedImage'] != null) {
-  //     setState(() {
-  //       selectedImage = data['selectedImage'];
-  //     });
-  //   }
-  // }
-
-  // Future<void> _saveImageToDatabase(String imagePath) async {
-  //   final existingData = await DatabaseHelper.instance.getUserData();
-  //   if (existingData != null) {
-  //     await DatabaseHelper.instance.saveUserData(
-  //       gender: existingData['gender'],
-  //       weight: existingData['weight'],
-  //       dailyGoal: existingData['dailyGoal'],
-  //       wakeUp: existingData['wakeUpTime'],
-  //       sleep: existingData['sleepTime'],
-  //       selectedImage: imagePath,
-  //     );
-  //   }
-  // }
-  // void _showImagePicker() {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     builder: (_) {
-  //       return Container(
-  //         padding: EdgeInsets.all(16),
-  //         height: 200,
-  //         child: GridView.count(
-  //           crossAxisCount: 4,
-  //           children: imageOptions.map((img) {
-  //             return GestureDetector(
-  //               onTap: () async {
-  //                 setState(() {
-  //                   selectedImage = img;
-  //                 });
-  //                 await _saveImageToDatabase(img);
-  //                 Navigator.pop(context); // close bottom sheet
-  //               },
-  //               child: Container(
-  //                 margin: EdgeInsets.all(8),
-  //                 decoration: BoxDecoration(
-  //                   border: Border.all(
-  //                     color: selectedImage == img ? Colors.blue : Colors.grey,
-  //                     width: 2,
-  //                   ),
-  //                   borderRadius: BorderRadius.circular(8),
-  //                 ),
-  //                 child: Image.asset(img),
-  //               ),
-  //             );
-  //           }).toList(),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
 
   final now = DateTime.now();
   final day = DateFormat('EEEE').format(DateTime.now()); // e.g., Friday
@@ -226,11 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffEFF7FF),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Row(
@@ -273,8 +304,8 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  width: 120,
-                  height: 180,
+                  width: 150,
+                  height: 300,
                   child: LiquidCustomProgressIndicator(
                     value: _counter,
                     valueColor: AlwaysStoppedAnimation(Colors.blue),
@@ -294,7 +325,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 TextButton(onPressed: Decrement, child: Text('zero')),
 
                 Container(
-                  width: 320,
+                  width: 290,
                   child: Column(
                     children: [
                       Row(
@@ -305,7 +336,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       LinearPercentIndicator(
-                        width: 320,
+                        width: 290,
 
                         animation: true,
                         lineHeight: 15.0,
@@ -327,8 +358,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       GestureDetector(
                         onTap: _incrementCounter,
                         child: Container(
-                          height: 75,
-                          width: 320,
+                          height: 54,
+                          width: 290,
 
                           decoration: BoxDecoration(
                             boxShadow: [
@@ -339,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 offset: Offset(4, 4), // X and Y offset
                               ),
                             ],
-                            border: Border.all(color: Color(0xff585858), width: 1.5),
+                            border: Border.all(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(100),
                             color: Colors.white,
                           ),
@@ -347,8 +378,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.add, color: Colors.blue, size: 40),
-                                Mytext(txt: 'DRINK', color: Colors.blue),
+                                Icon(Icons.add, color: Colors.blue, size: 35),
+                                Mytext(txt: 'DRINK', color: Colors.blue,size: 26,),
                               ],
                             ),
                           ),
@@ -419,15 +450,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
 /// This path looks like a real teardrop shape
 Path _buildWaterDropPath(Size size) {
-  final double w = size.width;
-  final double h = size.height;
+  final double width = size.width;
+  final double height = size.height;
 
   final Path path = Path();
-  path.moveTo(w * 0.5, 0);
-  path.quadraticBezierTo(w * 0.95, h * 0.35, w * 0.5, h);
-  path.quadraticBezierTo(w * 0.05, h * 0.35, w * 0.5, 0);
+  path.moveTo(width * 0.5, 0);
+  path.cubicTo(width * 0.9, height * 0.3, width * 0.9, height * 0.7, width * 0.5, height);
+  path.cubicTo(width * 0.1, height * 0.7, width * 0.1, height * 0.3, width * 0.5, 0);
   path.close();
   return path;
 }
+
 
 
