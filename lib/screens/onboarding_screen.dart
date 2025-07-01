@@ -40,7 +40,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         weight: selectedWeight,
         wakeUp: wakeUpTime.format(context),
         sleep: sleepTime.format(context),
-        dailyGoal: 250,
+        dailyGoal: 2500,
       );
       checkUserData();
       completeOnboarding();
