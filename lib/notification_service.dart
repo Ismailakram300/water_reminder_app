@@ -30,15 +30,16 @@ class NotificationService {
     final scheduledTime = now.add(Duration(minutes: intervalMinutes));
 
     print("⏰ Scheduling reminder in $intervalMinutes minutes at $scheduledTime");
-
     const androidDetails = AndroidNotificationDetails(
       'reminder_channel',
       'Reminders',
       channelDescription: 'Auto water intake reminders',
-      importance: Importance.high,
+      importance: Importance.max,  // ✅ Required
       priority: Priority.high,
-    //  allowWhileIdle: true,
+      playSound: true,
+      enableVibration: true,
     );
+
 
     const notificationDetails = NotificationDetails(android: androidDetails);
 
