@@ -3,6 +3,8 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../Models/drinks_log.dart';
+
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._internal();
 
@@ -158,6 +160,24 @@ class DatabaseHelper {
 
     print('Daily goal update -> $rows row(s) updated');
   }
+  Future<List<DrinkLog>> getTodayLogs() async {
+    final db = await database;
+    final now = DateTime.now();
+    final todayStart = DateTime(now.year, now.month, now.day).toIso8601String();
+
+    final result = await db.rawQuery('''
+    SELECT amount, timestamp,image  FROM drink_logs WHERE timestamp >= ?
+  ''', [todayStart]);
+
+    return result.map((row) {
+      return DrinkLog(
+        amount: row['amount'] as int,
+        timestamp: DateTime.parse(row['timestamp'] as String),
+        imagePath: row['image'] as String,
+      );
+    }).toList();
+  }
+
 
 
 
