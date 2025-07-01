@@ -91,6 +91,7 @@ import 'package:flutter/material.dart';
 
 import '../Database/database_helper.dart';
 import '../Models/drinks_log.dart';
+import '../bar_chat.dart';
 
 class Analysis extends StatefulWidget {
   const Analysis({super.key});
@@ -145,16 +146,8 @@ class _AnalysisState extends State<Analysis> {
             ),
             child: Column(
               children: [
-                Text(
-                  'Total: 3150 ml',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
-                ),
                 SizedBox(height: 10),
-                Container(height: 200, child: TodayWaterChart()),
+                Container( child: TodayWaterChart()),
               ],
             ),
           ),
