@@ -77,7 +77,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   NumberPicker(
                     value: currentValue,
                     minValue: 100,
-                    maxValue: 1000,
+                    maxValue: 10000,
                     step: 50,
                     haptics: true,
                     onChanged: (value) => setState(() => currentValue = value),
