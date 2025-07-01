@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -281,6 +282,27 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
+                ElevatedButton(
+                  onPressed: () async {
+                    final plugin =  FlutterLocalNotificationsPlugin();
+                    const details = NotificationDetails(
+                      android: AndroidNotificationDetails(
+                        'test_channel',
+                        'Test Notifications',
+                        importance: Importance.high,
+                        priority: Priority.high,
+                      ),
+                    );
+                    await plugin.show(
+                      0,
+                      'Test Notification',
+                      'This is a test 🚀',
+                      details,
+                    );
+                  },
+                  child: Text("Send Test Notification"),
+                ),
+
                 SizedBox(
                   width: 150,
                   height: 300,

@@ -115,6 +115,68 @@ class _SettingsScreenState extends State<SettingsScreen> {
       },
     );
   }
+  void showGenderDialog(BuildContext context, String initialGender) {
+    String selectedGender = initialGender;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text("Select Gender", style: TextStyle(fontWeight: FontWeight.bold)),
+          content: StatefulBuilder(
+            builder: (context, setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  RadioListTile<String>(
+                    title: Text("Male"),
+                    value: "Male",
+                    groupValue: selectedGender,
+                    onChanged: (value) => setState(() => selectedGender = value!),
+                  ),
+                  RadioListTile<String>(
+                    title: Text("Female"),
+                    value: "Female",
+                    groupValue: selectedGender,
+                    onChanged: (value) => setState(() => selectedGender = value!),
+                  ),
+                  RadioListTile<String>(
+                    title: Text("Other"),
+                    value: "Other",
+                    groupValue: selectedGender,
+                    onChanged: (value) => setState(() => selectedGender = value!),
+                  ),
+                ],
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text("CANCEL"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await DatabaseHelper.instance.updateGender(selectedGender);
+                await DatabaseHelper.instance.debugPrintAllUserData();
+                Navigator.of(context).pop();
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Gender set to $selectedGender")),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: Text("Save"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   String selectedSound = "Chime";
   void _showSoundPicker(BuildContext context) {
@@ -200,7 +262,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           SizedBox(height: 20),
           _buildSectionTitle("Personal Information"),
-          _buildSettingsTile("Gender"),
+          _buildSettingsTile("Gender", onTap:() async{
+            final userData = await DatabaseHelper.instance.getUserData();
+            final currentGoal = userData?['gender'] ?? 'other';
+            showGenderDialog(context,currentGoal);}),
           _buildSettingsTile("Weight"),
           _buildSettingsTile("Wake-up time"),
           _buildSettingsTile("Bedtime"),

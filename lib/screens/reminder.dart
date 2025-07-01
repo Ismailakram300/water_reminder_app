@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import '../notification_service.dart';
 
 class ReminderScreen extends StatefulWidget {
   @override
@@ -8,7 +11,8 @@ class ReminderScreen extends StatefulWidget {
 class _ReminderScreenState extends State<ReminderScreen> {
   int selectedInterval = 30; // 30 minutes default
 
-  final List<int> reminderOptions = [30, 60, 120, 180, 240];
+  final List<int> reminderOptions = [1, 60, 120, 180, 240];
+
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +35,14 @@ class _ReminderScreenState extends State<ReminderScreen> {
             return ReminderTile(
               label: _getLabel(minutes),
               isSelected: selectedInterval == minutes,
-              onChanged: (val) {
+              onChanged: (val) async {
                 setState(() {
                   selectedInterval = minutes;
                 });
+                await NotificationService.cancelAllReminders(); // cancel old
+                await NotificationService.scheduleReminder(minutes); // schedule new
               },
+
             );
           },
         ),
