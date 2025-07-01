@@ -44,7 +44,13 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
   }
-
+Future<void> _addDrink (int ml,String path) async{
+    await DatabaseHelper.instance.saveDrinkLog(amount: ml,imagePath: path);
+    final total = await DatabaseHelper.instance.getTodayDrinkTotal();
+    final isGoalDone= await DatabaseHelper.instance.isTargetAchieved();
+    print ('total drank today $total ml');
+    print (isGoalDone ? 'Goal Achiced': 'Keep going!');
+}
   Future<void> _saveImageAndMlToDatabase(String imagePath, int ml) async {
     final existingData = await DatabaseHelper.instance.getUserData();
     if (existingData != null) {
@@ -387,7 +393,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       SizedBox(height: 20),
                       GestureDetector(
-                        onTap: _incrementCounter,
+                        onTap: (){_addDrink(selectedMl,selectedImage);},
                         child: Container(
                           height: 54,
                           width: 290,
