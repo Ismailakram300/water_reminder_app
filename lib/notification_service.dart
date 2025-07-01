@@ -14,9 +14,15 @@ class NotificationService {
 
     await flutterLocalNotificationsPlugin.initialize(initSettings);
 
-    tz.initializeTimeZones(); // Required for scheduling
-    print("🔔 Notification Service Initialized");
+    tz.initializeTimeZones(); // ✅ Initialize tz data
+
+    // ✅ Set correct local timezone (important!)
+    final location = tz.getLocation('Asia/Karachi');
+    tz.setLocalLocation(location);
+
+    print("🔔 Notification Service Initialized with timezone: $location");
   }
+
 
   /// Cancel all scheduled notifications
   static Future<void> cancelAllReminders() async {
@@ -49,7 +55,7 @@ class NotificationService {
       'Time to drink water 💧',
       scheduledTime,
       notificationDetails,
-       androidScheduleMode: AndroidScheduleMode.exact, // ✅ new parameter
+       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle, // ✅ new parameter
     );
   }
 
