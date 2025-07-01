@@ -87,6 +87,9 @@
 //   }
 // }
 import 'package:flutter/material.dart';
+
+import '../Database/database_helper.dart';
+import '../Models/drinks_log.dart';
 class Analysis extends StatefulWidget {
   const Analysis({super.key});
 
@@ -95,14 +98,31 @@ class Analysis extends StatefulWidget {
 }
 
 class _AnalysisState extends State<Analysis> {
+  @override
+  void initState() {
+    super.initState();
+    _loadLogs();
+  }
+
+  Future<void> _loadLogs() async {
+    final logs = await DatabaseHelper.instance.getTodayLogs();
+    final userData = await DatabaseHelper.instance.getUserData();
+
+    setState(() {
+      waterLogs = logs;
+      totalDrank = logs.fold(0, (sum, item) => sum + item.amount);
+      drinkCount = logs.length;
+      dailyGoal = userData?['dailyGoal'] ?? 2000;
+    });
+  }
 
 
 
 
-  final List<Map<String, String>> waterLogs = [
-    {'amount': '150ml', 'time': '11:44'},
-    {'amount': '150ml', 'time': '12:15'},
-  ];
+  List<DrinkLog> waterLogs = [];
+  int totalDrank = 0;
+  int drinkCount = 0;
+  int dailyGoal = 2000;
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +154,7 @@ class _AnalysisState extends State<Analysis> {
                 Container(
                   height: 200,
                   child: CustomPaint(
-                    painter: BarChartPainter(value: 3150),
+                    painter: BarChartPainter(value: totalDrank),
                   ),
                 ),
               ],
@@ -147,9 +167,9 @@ class _AnalysisState extends State<Analysis> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _statBox('Drink', '21 cups', Colors.lightBlue[100]!),
-                _statBox('Total', '3150 ml', Colors.orange[100]!),
-                _statBox('Goal', '1980 ml', Colors.cyan[100]!),
+                _statBox('Drink', '$drinkCount cups', Colors.lightBlue[100]!),
+                _statBox('Total', '$totalDrank ml', Colors.orange[100]!),
+                _statBox('Goal', '$dailyGoal ml', Colors.cyan[100]!),
               ],
             ),
           ),
@@ -159,13 +179,16 @@ class _AnalysisState extends State<Analysis> {
             child: ListView.builder(
               itemCount: waterLogs.length,
               itemBuilder: (context, index) {
+                final log = waterLogs[index];
+                final timeStr = "${log.timestamp.hour.toString().padLeft(2, '0')}:${log.timestamp.minute.toString().padLeft(2, '0')}";
                 return ListTile(
                   leading: Icon(Icons.local_drink, color: Colors.blue, size: 30),
-                  title: Text(waterLogs[index]['amount']!),
-                  subtitle: Text(waterLogs[index]['time']!),
+                  title: Text('${log.amount} ml'),
+                  subtitle: Text(timeStr),
                 );
               },
-            ),
+            )
+
           ),
         ],
       ),
