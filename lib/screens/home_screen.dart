@@ -18,12 +18,16 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
+    _loadProgress();
     _loadImageFromDatabase();
   }
 
   String selectedImage = 'assets/images/glass-water.png'; // default image
   int selectedMl = 100;
   int dailyGoal = 250;
+  int todayDrank = 0;
+  double _counter = 0.0;
+  int percentage=0;
   // List<String> imageOptions = [
   //   'assets/images/glass-water.png',
   //   'assets/images/bottle.png',
@@ -44,13 +48,41 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
   }
-Future<void> _addDrink (int ml,String path) async{
-    await DatabaseHelper.instance.saveDrinkLog(amount: ml,imagePath: path);
-    final total = await DatabaseHelper.instance.getTodayDrinkTotal();
-    final isGoalDone= await DatabaseHelper.instance.isTargetAchieved();
-    print ('total drank today $total ml');
-    print (isGoalDone ? 'Goal Achiced': 'Keep going!');
-}
+  Future<void> _loadProgress() async {
+    final userData = await DatabaseHelper.instance.getUserData();
+    final drank = await DatabaseHelper.instance.getTodayDrinkTotal();
+
+    setState(() {
+      dailyGoal = userData?['dailyGoal'] ?? 2000;
+      todayDrank = drank;
+      _counter = (todayDrank / dailyGoal).clamp(0.0, 1.0);
+      // Optional: percentage = (_counter * 100).toInt();
+    });
+  }
+
+  Future<void> _addDrink(int ml, String path) async {
+    // 1. Save the drink log
+    await DatabaseHelper.instance.saveDrinkLog(amount: ml, imagePath: path);
+
+    // 2. Get updated total and user data
+    final userData = await DatabaseHelper.instance.getUserData();
+    final drank = await DatabaseHelper.instance.getTodayDrinkTotal();
+    final isGoalDone = await DatabaseHelper.instance.isTargetAchieved();
+
+    // 3. Update the state to refresh progress bar
+    setState(() {
+      dailyGoal = userData?['dailyGoal'] ?? 2000;
+      todayDrank = drank;
+      _counter = (todayDrank / dailyGoal).clamp(0.0, 1.0);
+      int percentage = (_counter * 100).toInt();
+
+    });
+
+    // 4. Print debug messages
+    print('Total drank today: $todayDrank ml');
+    print(isGoalDone ? '🎉 Goal Achieved!' : '💧 Keep going!');
+  }
+
   Future<void> _saveImageAndMlToDatabase(String imagePath, int ml) async {
     final existingData = await DatabaseHelper.instance.getUserData();
     if (existingData != null) {
@@ -67,96 +99,6 @@ Future<void> _addDrink (int ml,String path) async{
     }
   }
 
-  // void _showDrinkSelector() {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     shape: RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-  //     ),
-  //     builder: (BuildContext context) {
-  //       int? tempSelectedMl = selectedMl;
-  //       String? tempSelectedImage = selectedImage;
-  //
-  //       return StatefulBuilder(
-  //         builder: (context, setModalState) {
-  //           return Padding(
-  //             padding: const EdgeInsets.all(16.0),
-  //             child: Column(
-  //               mainAxisSize: MainAxisSize.min,
-  //               children: [
-  //                 Text("Select Drink", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-  //                 const SizedBox(height: 16),
-  //                 GridView.count(
-  //                   shrinkWrap: true,
-  //                   crossAxisCount: 3,
-  //                   crossAxisSpacing: 10,
-  //                   mainAxisSpacing: 10,
-  //                   children: drinkOptions.map((option) {
-  //                     final isSelected = tempSelectedMl == option.ml;
-  //                     return GestureDetector(
-  //                       onTap: () {
-  //                         setModalState(() {
-  //                           tempSelectedMl = option.ml;
-  //                           tempSelectedImage = option.imagePath;
-  //                         });
-  //                       },
-  //                       child: Container(
-  //                         decoration: BoxDecoration(
-  //                           border: Border.all(
-  //                             color: isSelected ? Colors.blue : Colors.grey,
-  //                             width: isSelected ? 2 : 1,
-  //                           ),
-  //                           borderRadius: BorderRadius.circular(12),
-  //                         ),
-  //                         child: Column(
-  //                           mainAxisAlignment: MainAxisAlignment.center,
-  //                           children: [
-  //                             Image.asset(option.imagePath, height: 40),
-  //                             SizedBox(height: 8),
-  //                             Text('${option.ml}ml'),
-  //                           ],
-  //                         ),
-  //                       ),
-  //                     );
-  //                   }).toList(),
-  //                 ),
-  //                 SizedBox(height: 16),
-  //                 Row(
-  //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //                   children: [
-  //                     OutlinedButton(
-  //                       onPressed: () => Navigator.pop(context),
-  //                       child: Text("CANCEL"),
-  //                     ),
-  //                     ElevatedButton(
-  //                       onPressed: () async {
-  //                         if (tempSelectedMl != null && tempSelectedImage != null) {
-  //                           setState(() {
-  //                             selectedMl = tempSelectedMl!;
-  //                             selectedImage = tempSelectedImage!;
-  //                           });
-  //
-  //                           // ✅ Save to database here
-  //                           await _saveImageAndMlToDatabase(
-  //                             selectedImage,
-  //                             selectedMl,
-  //                           );
-  //
-  //                           Navigator.pop(context);
-  //                         }
-  //                       },
-  //                       child: Text("OK"),
-  //                     ),
-  //                   ],
-  //                 )
-  //               ],
-  //             ),
-  //           );
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
 
   void _showDrinkSelector() {
     int? tempSelectedMl = selectedMl;
@@ -273,16 +215,15 @@ Future<void> _addDrink (int ml,String path) async{
     );
   }
 
-  double _counter = 0.1;
   int _per = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter += 0.1;
-      _per = 10 + _per;
-      if (_per > 100) _per = 100;
-    });
-  }
+  // void _incrementCounter() {
+  //   setState(() {
+  //     _counter += 0.1;
+  //     _per = 10 + _per;
+  //     if (_per > 100) _per = 100;
+  //   });
+  // }
 
   void Decrement() {
     setState(() {
@@ -368,14 +309,14 @@ Future<void> _addDrink (int ml,String path) async{
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('$_per%', style: TextStyle()),
+                          Text( "${((todayDrank / dailyGoal) * 100).clamp(0, 100).toInt()}%", style: TextStyle()),
                           Text('$dailyGoal'+'ml', style: TextStyle()),
                         ],
                       ),
                       LinearPercentIndicator(
                         width: 290,
 
-                        animation: true,
+                        animation: false,
                         lineHeight: 15.0,
                         animationDuration: 2000,
                         percent: _counter,
