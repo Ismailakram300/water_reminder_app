@@ -42,6 +42,14 @@ class DatabaseHelper {
         selectedMl INTEGER
       )
     ''');
+
+    await db.execute('''
+   CREATE TABLE drink_logs(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      amount INTEGER,
+      image TEXT,
+      timestamp TEXT)
+    ''');
   }
 
   Future<void> saveUserData({
@@ -67,30 +75,7 @@ class DatabaseHelper {
     }, conflictAlgorithm: ConflictAlgorithm.replace); // ✅ Overwrite row with ID = 1
   }
 
-  // Future<void> saveUserData({
-  //   required String gender,
-  //   required int weight,
-  //   required int dailyGoal,
-  //   required String wakeUp,
-  //   required String sleep,
-  //   String? selectedImage,
-  //   int? selectedMl,
-  // }) async {
-  //   final db = await database;
-  //
-  //   // Ensure only one row exists — you can also replace with `REPLACE` strategy instead
-  //   await db.delete('user_data');
-  //
-  //   await db.insert('user_data', {
-  //     'gender': gender,
-  //     'weight': weight,
-  //     'wakeUpTime': wakeUp,
-  //     'sleepTime': sleep,
-  //     'dailyGoal': dailyGoal,
-  //     'selectedImage': selectedImage ?? 'assets/images/glass-water.png',
-  //     'selectedMl': selectedMl ?? 100,
-  //   });
-  // }
+
 
   Future<Map<String, dynamic>?> getUserData() async {
     final db = await database;
@@ -108,6 +93,45 @@ class DatabaseHelper {
       whereArgs: [1],
     );
   }
+  Future<void> saveDrinkLog({
+    required int amount,
+    String? imagePath,
+  }) async {
+    final db = await database;
+
+    await db.insert('drink_logs', {
+      'amount': amount,
+      'image': imagePath ?? 'assets/images/glass-water.png',
+      'timestamp': DateTime.now().toIso8601String(),
+    });
+
+    print("Drink saved: $amount ml");
+  }
+
+  Future<int> getTodayDrinkTotal() async {
+    final db = await database;
+
+    final now = DateTime.now();
+    final todayStart = DateTime(now.year, now.month, now.day);
+    final todayStartIso = todayStart.toIso8601String();
+
+    final result = await db.rawQuery('''
+    SELECT SUM(amount) as total FROM drink_logs 
+    WHERE timestamp >= ?
+  ''', [todayStartIso]);
+
+    return (result.first['total'] as int?) ?? 0;
+  }
+  Future<bool> isTargetAchieved() async {
+    final userData = await getUserData();
+    final dailyGoal = userData?['dailyGoal'] ?? 2000;
+
+    final totalDrank = await getTodayDrinkTotal();
+
+    return totalDrank >= dailyGoal;
+  }
+
+
   Future<void> debugPrintAllUserData() async {
     final db = await database;
     final result = await db.query('user_data');
