@@ -146,6 +146,14 @@ class _AnalysisState extends State<Analysis> {
             ),
             child: Column(
               children: [
+                Text(
+                  'Total: $totalDrank ml',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                ),
                 SizedBox(height: 10),
                 Container( child: TodayWaterChart()),
               ],
