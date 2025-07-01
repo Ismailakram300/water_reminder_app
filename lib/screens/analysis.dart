@@ -86,10 +86,12 @@
 //     );
 //   }
 // }
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../Database/database_helper.dart';
 import '../Models/drinks_log.dart';
+
 class Analysis extends StatefulWidget {
   const Analysis({super.key});
 
@@ -115,9 +117,6 @@ class _AnalysisState extends State<Analysis> {
       dailyGoal = userData?['dailyGoal'] ?? 2000;
     });
   }
-
-
-
 
   List<DrinkLog> waterLogs = [];
   int totalDrank = 0;
@@ -148,15 +147,14 @@ class _AnalysisState extends State<Analysis> {
               children: [
                 Text(
                   'Total: 3150 ml',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  height: 200,
-                  child: CustomPaint(
-                    painter: BarChartPainter(value: totalDrank),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
                   ),
                 ),
+                SizedBox(height: 10),
+                Container(height: 200, child: TodayWaterChart()),
               ],
             ),
           ),
@@ -180,21 +178,41 @@ class _AnalysisState extends State<Analysis> {
               itemCount: waterLogs.length,
               itemBuilder: (context, index) {
                 final log = waterLogs[index];
-                final timeStr = "${log.timestamp.hour.toString().padLeft(2, '0')}:${log.timestamp.minute.toString().padLeft(2, '0')}";
-                return ListTile(
-                  leading: Icon(Icons.local_drink, color: Colors.blue, size: 30),
-                  title: Text('${log.amount} ml'),
-                  subtitle: Text(timeStr),
+                final timeStr =
+                    "${log.timestamp.hour.toString().padLeft(2, '0')}:${log.timestamp.minute.toString().padLeft(2, '0')}";
+
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: Image.asset(
+                          log.imagePath,
+                          height: 42,
+                          width: 42,
+                          errorBuilder: (context, error, stackTrace) => Icon(
+                            Icons.local_drink,
+                            color: Colors.blue,
+                            size: 30,
+                          ),
+                        ),
+                        title: Text('${log.amount} ml'),
+                        subtitle: Text(timeStr),
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Divider(thickness: 2, color: Colors.black),
+                      ),
+                    ],
+                  ),
                 );
               },
-            )
-
+            ),
           ),
         ],
       ),
 
       // Bottom Navigation
-
     );
   }
 
@@ -217,34 +235,35 @@ class _AnalysisState extends State<Analysis> {
   }
 }
 
-class BarChartPainter extends CustomPainter {
-  final int value;
+// class BarChartPainter extends CustomPainter {
+//   final int value;
+//
+//   BarChartPainter({required this.value});
+//
+//   @override
+//   void paint(Canvas canvas, Size size) {
+//     final barPaint = Paint()..color = Colors.blueAccent;
+//     final textPainter = TextPainter(textDirection: TextDirection.ltr);
+//
+//     double maxHeight = 5000;
+//     double barHeight = (value / maxHeight) * size.height;
+//
+//     // Draw bar
+//     canvas.drawRect(
+//       Rect.fromLTWH(size.width / 2 - 20, size.height - barHeight, 40, barHeight),
+//       barPaint,
+//     );
+//
+//     // Draw text
+//     textPainter.text = TextSpan(
+//       text: '$value',
+//       style: TextStyle(color: Colors.black, fontSize: 14),
+//     );
+//     textPainter.layout();
+//     textPainter.paint(canvas, Offset(size.width / 2 - textPainter.width / 2, size.height - barHeight - 20));
+//   }
+//
+//   @override
+//   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+// }
 
-  BarChartPainter({required this.value});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final barPaint = Paint()..color = Colors.blueAccent;
-    final textPainter = TextPainter(textDirection: TextDirection.ltr);
-
-    double maxHeight = 5000;
-    double barHeight = (value / maxHeight) * size.height;
-
-    // Draw bar
-    canvas.drawRect(
-      Rect.fromLTWH(size.width / 2 - 20, size.height - barHeight, 40, barHeight),
-      barPaint,
-    );
-
-    // Draw text
-    textPainter.text = TextSpan(
-      text: '$value',
-      style: TextStyle(color: Colors.black, fontSize: 14),
-    );
-    textPainter.layout();
-    textPainter.paint(canvas, Offset(size.width / 2 - textPainter.width / 2, size.height - barHeight - 20));
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
-}
