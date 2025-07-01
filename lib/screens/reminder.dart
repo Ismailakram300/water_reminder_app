@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../notification_service.dart';
+import 'dart:io';
+import 'package:android_intent_plus/android_intent.dart';
+import 'package:android_intent_plus/flag.dart';
 
 class ReminderScreen extends StatefulWidget {
   @override
@@ -9,7 +12,46 @@ class ReminderScreen extends StatefulWidget {
 }
 
 class _ReminderScreenState extends State<ReminderScreen> {
+
+  Future<void> setSystemAlarmClock(int afterMinutes) async {
+    if (!Platform.isAndroid) return;
+
+    final now = DateTime.now();
+    final future = now.add(Duration(minutes: afterMinutes));
+
+    final intent = AndroidIntent(
+      action: 'android.intent.action.SET_ALARM',
+      arguments: {
+        'android.intent.extra.alarm.HOUR': future.hour,
+        'android.intent.extra.alarm.MINUTES': future.minute,
+        'android.intent.extra.alarm.MESSAGE': 'Drink Water 💧',
+        'android.intent.extra.alarm.SKIP_UI': false,
+      },
+      flags: <int>[Flag.FLAG_ACTIVITY_NEW_TASK],
+    );
+
+    try {
+      await intent.launch();
+    } catch (e) {
+      print("🚨 Failed to launch alarm intent: $e");
+    }
+
+  }
+
   int selectedInterval = 30; // 30 minutes default
+  @override
+  void initState() {
+    super.initState();
+    _requestNotificationPermission();
+  }
+
+  Future<void> _requestNotificationPermission() async {
+    final status = await Permission.notification.status;
+    if (!status.isGranted) {
+      await Permission.notification.request();
+    }
+  }
+
 
   final List<int> reminderOptions = [1, 60, 120, 180, 240];
 
@@ -39,8 +81,9 @@ class _ReminderScreenState extends State<ReminderScreen> {
                 setState(() {
                   selectedInterval = minutes;
                 });
-                await NotificationService.cancelAllReminders(); // cancel old
-                await NotificationService.scheduleReminder(minutes); // schedule new
+                await NotificationService.cancelAllReminders();         // Cancel existing notification
+                await NotificationService.scheduleReminder(minutes);    // Schedule new notification
+                await setSystemAlarmClock(minutes);                     // Set alarm in Android clock
               },
 
             );
