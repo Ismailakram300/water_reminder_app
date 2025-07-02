@@ -287,7 +287,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   width: 150,
                   height: 300,
-                  child: LiquidCustomProgressIndicator(
+                  child:LiquidCustomProgressIndicator(
                     value: _counter,
                     valueColor: AlwaysStoppedAnimation(Colors.blue),
                     backgroundColor: const Color(0xff9ED1FF),
@@ -301,7 +301,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     shapePath: _buildWaterDropPath(Size(150, 200)),
-                  ),
+                  )
+
                 ),
                 TextButton(onPressed: Decrement, child: Text('zero')),
 
@@ -442,28 +443,40 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 /// This path looks like a real teardrop shape
+// Path _buildWaterDropPath(Size size) {
+//   final double width = size.width;
+//   final double height = size.height;
+//
+//   final Path path = Path();
+//   path.moveTo(width * 0.5, 0);
+//   path.cubicTo(
+//     width * 0.9,
+//     height * 0.3,
+//     width * 0.9,
+//     height * 0.7,
+//     width * 0.5,
+//     height,
+//   );
+//   path.cubicTo(
+//     width * 0.1,
+//     height * 0.7,
+//     width * 0.1,
+//     height * 0.3,
+//     width * 0.5,
+//     0,
+//   );
+//   path.close();
+//   return path;
+// }
 Path _buildWaterDropPath(Size size) {
-  final double width = size.width;
-  final double height = size.height;
+  final path = Path();
+  final width = size.width;
+  final height = size.height;
 
-  final Path path = Path();
-  path.moveTo(width * 0.5, 0);
-  path.cubicTo(
-    width * 0.9,
-    height * 0.3,
-    width * 0.9,
-    height * 0.7,
-    width * 0.5,
-    height,
-  );
-  path.cubicTo(
-    width * 0.1,
-    height * 0.7,
-    width * 0.1,
-    height * 0.3,
-    width * 0.5,
-    0,
-  );
+  path.moveTo(width / 2, 0); // top middle point
+  path.quadraticBezierTo(width, height * 0.35, width / 2, height);
+  path.quadraticBezierTo(0, height * 0.35, width / 2, 0);
   path.close();
+
   return path;
 }
