@@ -282,12 +282,31 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-
+                ElevatedButton(
+                  onPressed: () async {
+                    final plugin =  FlutterLocalNotificationsPlugin();
+                    const details = NotificationDetails(
+                      android: AndroidNotificationDetails(
+                        'test_channel',
+                        'Test Notifications',
+                        importance: Importance.high,
+                        priority: Priority.high,
+                      ),
+                    );
+                    await plugin.show(
+                      0,
+                      'Test Notification',
+                      'This is a test 🚀',
+                      details,
+                    );
+                  },
+                  child: Text("Send Test Notification"),
+                ),
 
                 SizedBox(
-                  width: 150,
+                  width: 300,
                   height: 300,
-                  child:LiquidCustomProgressIndicator(
+                  child: LiquidCustomProgressIndicator(
                     value: _counter,
                     valueColor: AlwaysStoppedAnimation(Colors.blue),
                     backgroundColor: const Color(0xff9ED1FF),
@@ -300,9 +319,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontSize: 18,
                       ),
                     ),
-                    shapePath: _buildWaterDropPath(Size(150, 200)),
-                  )
-
+                    shapePath: _buildWaterDropPath(),
+                  ),
                 ),
                 TextButton(onPressed: Decrement, child: Text('zero')),
 
@@ -391,13 +409,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               Column(
                                 children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      DatabaseHelper.instance.debugPrintAllData();
-                                    },
-                                    child: Text("Print All DB Data"),
-                                  ),
-
                                   Text(
                                     'Water',
                                     style: TextStyle(
@@ -443,40 +454,26 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 /// This path looks like a real teardrop shape
-// Path _buildWaterDropPath(Size size) {
-//   final double width = size.width;
-//   final double height = size.height;
-//
-//   final Path path = Path();
-//   path.moveTo(width * 0.5, 0);
-//   path.cubicTo(
-//     width * 0.9,
-//     height * 0.3,
-//     width * 0.9,
-//     height * 0.7,
-//     width * 0.5,
-//     height,
-//   );
-//   path.cubicTo(
-//     width * 0.1,
-//     height * 0.7,
-//     width * 0.1,
-//     height * 0.3,
-//     width * 0.5,
-//     0,
-//   );
-//   path.close();
-//   return path;
-// }
-Path _buildWaterDropPath(Size size) {
+Path _buildWaterDropPath() {
   final path = Path();
-  final width = size.width;
-  final height = size.height;
 
-  path.moveTo(width / 2, 0); // top middle point
-  path.quadraticBezierTo(width, height * 0.35, width / 2, height);
-  path.quadraticBezierTo(0, height * 0.35, width / 2, 0);
+  // Start at the bottom center
+  path.moveTo(150, 300);
+
+  // Right side curve
+  path.cubicTo(
+    260, 230,   // Control point 1 (right)
+    260, 100,   // Control point 2 (top right curve)
+    150, 0,     // End at top point
+  );
+
+  // Left side curve
+  path.cubicTo(
+    40, 100,    // Control point 1 (top left curve)
+    40, 230,    // Control point 2 (left)
+    150, 300,   // Back to bottom center
+  );
+
   path.close();
-
   return path;
 }
