@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -177,6 +178,62 @@ class DatabaseHelper {
       );
     }).toList();
   }
+  Future<void> updateWeight(int newWeight) async {
+    final db = await database;
+    final rows = await db.update(
+      'user_data',
+      {'weight': newWeight},
+      where: 'id = ?',
+      whereArgs: [1],
+    );
+
+    print('Daily goal update -> $rows row(s) updated');
+  } Future<void> updateWakeUpTime(TimeOfDay time) async {
+    final db = await database;
+    final rows = await db.update(
+      'user_data',
+      {'wakeUpTime': time},
+      where: 'id = ?',
+      whereArgs: [1],
+    );
+
+    print('Daily goal update -> $rows row(s) updated');
+  }
+  Future<List<Map<String, dynamic>>> getWeeklyDrinkSummary() async {
+    final db = await database;
+
+    final now = DateTime.now();
+    final sevenDaysAgo = now.subtract(Duration(days: 6)); // last 7 days including today
+    final startDate = DateTime(sevenDaysAgo.year, sevenDaysAgo.month, sevenDaysAgo.day).toIso8601String();
+
+    final result = await db.rawQuery('''
+    SELECT 
+      DATE(timestamp) as day, 
+      SUM(amount) as total 
+    FROM drink_logs 
+    WHERE timestamp >= ? 
+    GROUP BY day 
+    ORDER BY day ASC
+  ''', [startDate]);
+
+    return result;
+  }
+  Future<void> debugPrintAllData() async {
+    final db = await database;
+
+    print("📦 user_data table:");
+    final userData = await db.query('user_data');
+    for (var row in userData) {
+      print(row);
+    }
+
+    print("📦 drink_logs table:");
+    final drinkLogs = await db.query('drink_logs');
+    for (var row in drinkLogs) {
+      print(row);
+    }
+  }
+
 
 
 
