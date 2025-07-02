@@ -1,62 +1,21 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:water_reminder_app/screens/alarm_callback.dart';
 
 class NotificationService {
-  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+  static const int alarmId = 100;
 
-  /// Initialize notifications
-  static Future<void> init() async {
-    const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
-
-    const initSettings = InitializationSettings(android: androidInit);
-
-    await flutterLocalNotificationsPlugin.initialize(initSettings);
-
-    tz.initializeTimeZones(); // ✅ Initialize tz data
-
-    // ✅ Set correct local timezone (important!)
-    final location = tz.getLocation('Asia/Karachi');
-    tz.setLocalLocation(location);
-
-    print("🔔 Notification Service Initialized with timezone: $location");
-  }
-
-
-  /// Cancel all scheduled notifications
-  static Future<void> cancelAllReminders() async {
-    await flutterLocalNotificationsPlugin.cancelAll();
-    print("❌ All notifications cancelled");
-  }
-
-  /// Schedule a reminder after [intervalMinutes]
-  static Future<void> scheduleReminder(int intervalMinutes) async {
-    final now = tz.TZDateTime.now(tz.local);
-    final scheduledTime = now.add(Duration(minutes: intervalMinutes));
-
-    print("⏰ Scheduling reminder in $intervalMinutes minutes at $scheduledTime");
-    const androidDetails = AndroidNotificationDetails(
-      'reminder_channel',
-      'Reminders',
-      channelDescription: 'Auto water intake reminders',
-      importance: Importance.max,  // ✅ Required
-      priority: Priority.high,
-      playSound: true,
-      enableVibration: true,
-    );
-
-
-    const notificationDetails = NotificationDetails(android: androidDetails);
-
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      0,
-      'Water Reminder',
-      'Time to drink water 💧',
-      scheduledTime,
-      notificationDetails,
-       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle, // ✅ new parameter
+  static Future<void> scheduleReminder({int intervalMinutes = 1}) async {
+    await AndroidAlarmManager.periodic(
+      Duration(minutes: intervalMinutes),
+      alarmId,
+      showReminder, // Top-level function only!
+      exact: true,
+      wakeup: true,
+      rescheduleOnReboot: true,
     );
   }
 
+  static Future<void> cancelReminder() async {
+    await AndroidAlarmManager.cancel(alarmId);
+  }
 }
