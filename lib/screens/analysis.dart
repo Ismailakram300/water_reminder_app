@@ -130,9 +130,9 @@ class _AnalysisState extends State<Analysis> {
     return Scaffold(
       backgroundColor: Color(0xffFAFBFE),
       appBar: AppBar(
-        backgroundColor: Colors.lightBlue[300],
-        elevation: 0,
-        title: Text('19/06/2025', style: TextStyle(fontSize: 20)),
+        backgroundColor: Colors.blue,
+       // elevation: 0,
+        title: Text('Analysis', style: TextStyle(fontSize: 20)),
         centerTitle: true,
       ),
       body: Column(
