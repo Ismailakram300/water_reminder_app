@@ -88,6 +88,7 @@
 // }
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:water_reminder_app/screens/weekly_water_chart.dart';
 
 import '../Database/database_helper.dart';
 import '../Models/drinks_log.dart';
@@ -154,8 +155,8 @@ class _AnalysisState extends State<Analysis> {
                     color: Colors.blue,
                   ),
                 ),
-                SizedBox(height: 10),
-                Container( child: TodayWaterChart()),
+               // SizedBox(height: 10),
+                Container( child: WeeklyWaterChart()),
               ],
             ),
           ),
