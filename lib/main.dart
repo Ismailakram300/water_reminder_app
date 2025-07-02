@@ -1,3 +1,4 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -15,8 +16,8 @@ Future<void> requestNotificationPermission() async {
 Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
-  await NotificationService.init();
-  await requestNotificationPermission();
+  await AndroidAlarmManager.initialize();
+  //await requestNotificationPermission();
 
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
