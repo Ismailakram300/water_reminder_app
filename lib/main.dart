@@ -1,4 +1,4 @@
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -13,11 +13,17 @@ Future<void> requestNotificationPermission() async {
     await Permission.notification.request();
   }
 }
-Future<void> main() async {
+Future<void> main()  async {
 
   WidgetsFlutterBinding.ensureInitialized();
-  await AndroidAlarmManager.initialize();
-  //await requestNotificationPermission();
+  NotificationService.initialize();
+  AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+    if (!isAllowed) {
+      // Request permission
+      AwesomeNotifications().requestPermissionToSendNotifications();
+    }
+  });
+  requestNotificationPermission();
 
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
