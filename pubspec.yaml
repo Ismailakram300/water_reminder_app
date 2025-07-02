@@ -47,6 +47,7 @@ dependencies:
   shared_preferences: ^2.5.3
   flutter_picker: ^2.0.3
   flutter_local_notifications: ^19.3.0
+  unique_simple_bar_chart: ^0.0.4
 
 dev_dependencies:
   flutter_test:
