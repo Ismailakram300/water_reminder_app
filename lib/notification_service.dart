@@ -52,6 +52,6 @@ class NotificationService {
 
   /// Cancel all reminders
   static Future<void> cancelAll() async {
-    await AwesomeNotifications().cancelNotificationsByChannelKey('water_reminder_channel');
+    await AwesomeNotifications().cancelSchedulesByChannelKey('water_reminder_channel');
   }
 }

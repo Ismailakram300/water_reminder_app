@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../main.dart';
@@ -64,17 +65,27 @@ class _ReminderScreenState extends State<ReminderScreen> {
               label: _getLabel(minutes),
               isSelected: selectedInterval == minutes,
               onChanged: (val) async {
-                // 1️⃣ Update UI state
                 setState(() {
                   selectedInterval = val ? minutes : 0;
                 });
 
-                // 2️⃣ Cancel any existing reminders
+                // 1️⃣ Cancel any existing reminders
                 await NotificationService.cancelAll();
+               //await NotificationService.cancelAll();
 
-                // 3️⃣ If switched ON, schedule a new repeating “alarm”
+                // If turned on, schedule repeating alarm every [minutes]
                 if (val) {
                   await NotificationService.scheduleRepeating(minutes);
+                }
+
+                // 2️⃣ If ON: set a system alarm [minutes] from now
+                if (val) {
+                  final now = DateTime.now().add(Duration(minutes: minutes));
+                  FlutterAlarmClock.createAlarm(
+                  hour:   now.hour,
+                   minutes:  now.minute,
+                    title: '💧 Drink Water',
+                  );
                 }
               },
 
