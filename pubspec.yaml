@@ -50,6 +50,7 @@ dependencies:
   unique_simple_bar_chart: ^0.0.4
   android_alarm_manager_plus: ^4.0.7
   awesome_notifications: ^0.10.1
+  flutter_alarm_clock: ^0.1.2
 
 dev_dependencies:
   flutter_test:
