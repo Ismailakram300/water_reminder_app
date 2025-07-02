@@ -282,26 +282,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                ElevatedButton(
-                  onPressed: () async {
-                    final plugin =  FlutterLocalNotificationsPlugin();
-                    const details = NotificationDetails(
-                      android: AndroidNotificationDetails(
-                        'test_channel',
-                        'Test Notifications',
-                        importance: Importance.high,
-                        priority: Priority.high,
-                      ),
-                    );
-                    await plugin.show(
-                      0,
-                      'Test Notification',
-                      'This is a test 🚀',
-                      details,
-                    );
-                  },
-                  child: Text("Send Test Notification"),
-                ),
+
 
                 SizedBox(
                   width: 150,
@@ -409,6 +390,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               Column(
                                 children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      DatabaseHelper.instance.debugPrintAllData();
+                                    },
+                                    child: Text("Print All DB Data"),
+                                  ),
+
                                   Text(
                                     'Water',
                                     style: TextStyle(
