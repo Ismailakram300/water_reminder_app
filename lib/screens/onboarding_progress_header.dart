@@ -50,6 +50,7 @@ class OnboardingProgressHeader extends StatelessWidget {
                     height: 20,
                     color: Colors.white,
                   ),              ),
+
                 const SizedBox(height: 4),
                 Mytext(txt:step['label']  as String ,size: 11),
               ],
