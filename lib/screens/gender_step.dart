@@ -23,6 +23,7 @@ class GenderStep extends StatelessWidget {
             decoration: TextDecoration.underline,
             txt: "Select your Gender",
             size: 26,
+
           ),
         ),
         const SizedBox(height: 50),
