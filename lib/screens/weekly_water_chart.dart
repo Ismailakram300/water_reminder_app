@@ -17,6 +17,7 @@ class _WeeklyWaterChartState extends State<WeeklyWaterChart> {
   @override
   void initState() {
     super.initState();
+
     _loadWeeklyData();
   }
 
