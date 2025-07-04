@@ -6,5 +6,3 @@ void showReminder() {
   final now = DateTime.now();
   log("🔔 Reminder triggered at $now");
 }
-
-
