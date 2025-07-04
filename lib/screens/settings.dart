@@ -21,7 +21,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
-
           ),
           title: Text(
             "Daily Goal",
