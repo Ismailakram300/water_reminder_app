@@ -90,7 +90,6 @@ class _ReminderScreenState extends State<ReminderScreen> {
               },
 
 
-
             );
           },
         ),
