@@ -91,6 +91,7 @@ class _TimeStepState extends State<TimeStep> {
                   child: NumberPicker(
                     selectedTextStyle: TextStyle(
                       fontSize: 25,
+
                       fontWeight: FontWeight.bold,
                       color: Colors.blue,
                     ),
