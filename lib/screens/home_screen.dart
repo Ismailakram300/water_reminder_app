@@ -54,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final drank = await DatabaseHelper.instance.getTodayDrinkTotal();
 
     setState(() {
+
       dailyGoal = userData?['dailyGoal'] ?? 2000;
       todayDrank = drank;
       _counter = (todayDrank / dailyGoal).clamp(0.0, 1.0);
