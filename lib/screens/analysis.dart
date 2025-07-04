@@ -135,6 +135,7 @@ class _AnalysisState extends State<Analysis> {
         title: Text('Analysis', style: TextStyle(fontSize: 20)),
         centerTitle: true,
       ),
+
       body: Column(
         children: [
           // Bar Chart Section
