@@ -46,6 +46,7 @@ class _TodayWaterChartState extends State<TodayWaterChart> {
         color: Colors.blue[50],
         borderRadius: BorderRadius.circular(16),
       ),
+
       child: Column(
         children: [
           const SizedBox(height: 10),
