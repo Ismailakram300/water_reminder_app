@@ -29,6 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
     //  await DatabaseHelper.instance.deleteDatabaseFile();
       Navigator.pushReplacement(
         context,
+
         MaterialPageRoute(builder: (context) => BottomNavBar()),
       );
     } else {
