@@ -34,6 +34,7 @@ class NotificationService {
 
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
+
         id: 123,
         channelKey: 'water_reminder_channel',
         title: '💧 Drink Water',
