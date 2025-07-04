@@ -16,7 +16,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int _currentindex = 0;
   List screenList = [HomeScreen(), Analysis(),SettingsScreen()];
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
