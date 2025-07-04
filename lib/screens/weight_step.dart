@@ -23,7 +23,6 @@ class WeightStep extends StatelessWidget {
         Row(
 
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
