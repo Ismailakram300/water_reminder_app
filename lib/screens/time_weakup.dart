@@ -87,7 +87,6 @@ class _TimeWakeupState extends State<TimeWakeup> {
                     maxValue: 59,
                     itemHeight: 45,
                     itemWidth: 40,
-
                     value: _selectedMinute,
                     zeroPad: true,
                     onChanged: (value) =>
