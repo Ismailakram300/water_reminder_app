@@ -7,7 +7,6 @@ class DrinkOption {
 
 
 List<DrinkOption> drinkOptions = [
-  DrinkOption(imagePath: 'assets/images/50ml.png', ml: 50),
   DrinkOption(imagePath: 'assets/images/glass-water_37170541/glass-water.png', ml: 50),
   DrinkOption(imagePath: 'assets/images/100ml.png', ml: 100),
   DrinkOption(imagePath: 'assets/images/200ml.png', ml: 200),
