@@ -33,6 +33,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
   void nextStep() async {
     if (currentStep < 3) {
+
       setState(() => currentStep++);
     } else {
       await DatabaseHelper.instance.saveUserData(
