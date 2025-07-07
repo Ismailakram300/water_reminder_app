@@ -184,14 +184,30 @@ class _AnalysisState extends State<Analysis> {
                     "${log.timestamp.hour.toString().padLeft(2, '0')}:${log.timestamp.minute.toString().padLeft(2, '0')}";
 
                 return Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: Column(
                     children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                            child: Image.asset(
+                              log.imagePath,
+                              height: 52,
+                              width: 52,
+                              errorBuilder: (context, error, stackTrace) => Icon(
+                                Icons.local_drink,
+                                color: Colors.blue,
+                                size: 30,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                       ListTile(
                         leading: Image.asset(
                           log.imagePath,
-                          height: 42,
-                          width: 42,
+                          height: 52,
+                          width: 52,
                           errorBuilder: (context, error, stackTrace) => Icon(
                             Icons.local_drink,
                             color: Colors.blue,
