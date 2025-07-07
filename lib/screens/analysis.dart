@@ -203,7 +203,7 @@ class _AnalysisState extends State<Analysis> {
                       ),
                       SizedBox(
                         width: double.infinity,
-                        child: Divider(thickness: 2, color: Colors.black),
+                        child: Divider(thickness: 1, color: Colors.black),
                       ),
                     ],
                   ),
@@ -236,36 +236,3 @@ class _AnalysisState extends State<Analysis> {
     );
   }
 }
-
-// class BarChartPainter extends CustomPainter {
-//   final int value;
-//
-//   BarChartPainter({required this.value});
-//
-//   @override
-//   void paint(Canvas canvas, Size size) {
-//     final barPaint = Paint()..color = Colors.blueAccent;
-//     final textPainter = TextPainter(textDirection: TextDirection.ltr);
-//
-//     double maxHeight = 5000;
-//     double barHeight = (value / maxHeight) * size.height;
-//
-//     // Draw bar
-//     canvas.drawRect(
-//       Rect.fromLTWH(size.width / 2 - 20, size.height - barHeight, 40, barHeight),
-//       barPaint,
-//     );
-//
-//     // Draw text
-//     textPainter.text = TextSpan(
-//       text: '$value',
-//       style: TextStyle(color: Colors.black, fontSize: 14),
-//     );
-//     textPainter.layout();
-//     textPainter.paint(canvas, Offset(size.width / 2 - textPainter.width / 2, size.height - barHeight - 20));
-//   }
-//
-//   @override
-//   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
-// }
-
