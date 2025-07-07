@@ -17,7 +17,7 @@ class WeightStep extends StatelessWidget {
 
         Mytext(
           decoration: TextDecoration.underline,
-          txt: "Choose your gender",
+          txt: "Enter your Weight",
           size: 26,
         ),
         Row(
