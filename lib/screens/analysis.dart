@@ -190,9 +190,11 @@ class _AnalysisState extends State<Analysis> {
                       Row(
                         children: [
                           SizedBox(
+                            height:100,
+                            width: 100,
                             child: Image.asset(
                               log.imagePath,
-                              height: 52,
+                              height: 72,
                               width: 52,
                               errorBuilder: (context, error, stackTrace) => Icon(
                                 Icons.local_drink,
