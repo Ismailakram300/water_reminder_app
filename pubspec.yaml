@@ -90,14 +90,13 @@ flutter:
      - assets/images/weight.png
      - assets/images/app_drop.png
      - assets/images/glass-water.png
-     - assets/images/50ml.png
-     - assets/images/100ml.png
-     - assets/images/250ml.png
-     - assets/images/200ml.png
-     - assets/images/300ml.png
-     - assets/images/400ml.png
-     - assets/images/350ml.png
-     - assets/images/450ml.png
+     - assets/images/water_50ml/water_50ml.png
+     - assets/images/water_100ml/water_100ml.png
+     - assets/images/water_250ml/water_250ml.png
+     - assets/images/water_300ml/water_300ml.png
+     - assets/images/water_350ml/water_350ml.png
+     - assets/images/water_400ml/water_400ml.png
+     - assets/images/water_450ml/water_450ml.png
 
 
   # An images asset can refer to one or more resolution-specific "variants", see

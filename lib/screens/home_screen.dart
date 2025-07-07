@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadImageFromDatabase();
   }
 
-  String selectedImage = 'assets/images/glass-water.png'; // default image
+  String selectedImage = 'assets/images/water_100ml/water_100ml.png'; // default image
   int selectedMl = 100;
   int dailyGoal = 250;
   int todayDrank = 0;
@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ); // Debug log
       setState(() {
         selectedImage =
-            data['selectedImage'] ?? 'assets/images/glass-water.png';
+            data['selectedImage'] ?? 'assets/images/water_100ml/water_100ml.png';
         selectedMl = data['selectedMl'] ?? 100;
         dailyGoal=data['dailyGoal'] ?? 250;
       });
@@ -226,12 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //   });
   // }
 
-  void Decrement() {
-    setState(() {
-      _counter = _counter - 0.1;
-      _per = _per - 10;
-    });
-  }
+
 
   final now = DateTime.now();
   final day = DateFormat('EEEE').format(DateTime.now()); // e.g., Friday
@@ -282,33 +277,14 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                ElevatedButton(
-                  onPressed: () async {
-                    final plugin =  FlutterLocalNotificationsPlugin();
-                    const details = NotificationDetails(
-                      android: AndroidNotificationDetails(
-                        'test_channel',
-                        'Test Notifications',
-                        importance: Importance.high,
-                        priority: Priority.high,
-                      ),
-                    );
-                    await plugin.show(
-                      0,
-                      'Test Notification',
-                      'This is a test 🚀',
-                      details,
-                    );
-                  },
-                  child: Text("Send Test Notification"),
-                ),
+
 
                 SizedBox(
                   width: 300,
                   height: 300,
                   child: LiquidCustomProgressIndicator(
                     value: _counter,
-                    valueColor: AlwaysStoppedAnimation(Colors.blue),
+                    valueColor: AlwaysStoppedAnimation(Color(0xff4EA0E9)),
                     backgroundColor: const Color(0xff9ED1FF),
                     direction: Axis.vertical,
                     center: Text(
@@ -322,7 +298,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     shapePath: _buildWaterDropPath(),
                   ),
                 ),
-                TextButton(onPressed: Decrement, child: Text('zero')),
 
                 Container(
                   width: 290,
@@ -365,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.grey.withOpacity(
-                                  0.5,
+                                  0.2,
                                 ), // Shadow color
                                 spreadRadius: 2, // How much it spreads
                                 blurRadius: 8, // How blurry it looks
