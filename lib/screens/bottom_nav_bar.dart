@@ -22,8 +22,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
       body: screenList[_currentindex],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.blue,
-        selectedItemColor: Color(0xffD4D4D4),
-        unselectedItemColor: Colors.white,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Color(0xffD4D4D4),
         selectedLabelStyle: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
