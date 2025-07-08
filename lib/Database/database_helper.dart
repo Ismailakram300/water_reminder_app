@@ -104,7 +104,7 @@ class DatabaseHelper {
 
     await db.insert('drink_logs', {
       'amount': amount,
-      'image': imagePath ?? 'assets/images/glass-water.png',
+      'image': imagePath ?? 'assets/images/water_50ml.png',
       'timestamp': DateTime.now().toIso8601String(),
     });
 
