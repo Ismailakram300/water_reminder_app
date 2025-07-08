@@ -61,12 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
         return AlertDialog(
           backgroundColor: Color(0xffE4E4E4),
           shape: RoundedRectangleBorder(
-            
             borderRadius: BorderRadius.circular(20),
           ),
           title: Text(
             "Daily Goal",
-            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Mulish',),
+            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Mulish'),
           ),
           content: StatefulBuilder(
             builder: (context, setState) {
@@ -77,9 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   NumberPicker(
                     value: currentValue,
                     minValue: 100,
-                    decoration:BoxDecoration(
-                      
-                    ),
+                    decoration: BoxDecoration(),
                     maxValue: 10000,
                     step: 50,
                     haptics: true,
@@ -94,14 +91,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text(
                     "ml",
 
-                    style: TextStyle(fontSize: 30,   fontWeight: FontWeight.bold, color: Color(0xff278DE8)),
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff278DE8),
+                    ),
                   ),
                 ],
               );
             },
           ),
           actions: [
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -121,12 +121,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Center(
                       child: Text(
                         "CANCEL",
-                        style: TextStyle(color: Color(0xff7A7A7A), fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          color: Color(0xff7A7A7A),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Mulish',
+                        ),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(width: 20,),
+                SizedBox(width: 20),
                 ElevatedButton(
                   onPressed: () async {
                     await DatabaseHelper.instance.updateDailyGoal(currentValue);
@@ -134,7 +138,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.of(context).pop();
                     isSaved = true;
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Daily goal set to $currentValue ml")),
+                      SnackBar(
+                        content: Text("Daily goal set to $currentValue ml"),
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -144,11 +150,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   child: Text("Save", style: TextStyle(color: Colors.white)),
-
                 ),
               ],
             ),
-
           ],
         );
       },
@@ -283,7 +287,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Center(
                   child: Text(
                     "CANCEL",
-                    style: TextStyle(color: Color(0xff7A7A7A), fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: Color(0xff7A7A7A),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -346,12 +353,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Text(
                     '$day, $date',
-                    style: TextStyle(fontSize: 16, color: Color(0xffFFFFFF)),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xffFFFFFF),
+                      fontFamily: 'Mulish',
+                    ),
                   ),
                   Text(
                     'Today',
                     style: TextStyle(
                       fontSize: 16,
+                      fontFamily: 'Mulish',
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -383,6 +395,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         '${(_counter * 100).toInt()}%',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontFamily: 'Mulish',
+
                           color: Colors.white,
                           fontSize: 18,
                         ),
@@ -400,9 +414,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Text(
                               "${((todayDrank / dailyGoal) * 100).clamp(0, 100).toInt()}%",
-                              style: TextStyle(),
+                              style: TextStyle(fontFamily: 'Mulish'),
                             ),
-                            Text('$dailyGoal' + 'ml', style: TextStyle()),
+                            Text(
+                              '$dailyGoal' + 'ml',
+                              style: TextStyle(
+                                fontFamily: 'Mulish',
+                                color: Color(0xff3E3E3E),
+                              ),
+                            ),
                           ],
                         ),
                         LinearPercentIndicator(
@@ -420,7 +440,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Progress', style: TextStyle()),
+                            Text(
+                              'Progress',
+                              style: TextStyle(
+                                fontFamily: 'Mulish',
+                                color: Color(0xff3E3E3E),
+                              ),
+                            ),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(0, 6, 0, 0),
                               child: InkWell(
@@ -484,10 +510,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.add, color: Colors.blue, size: 35),
+                                  Icon(
+                                    Icons.add,
+                                    color: Color(0xff278DE8),
+                                    size: 35,
+                                  ),
                                   Mytext(
                                     txt: 'DRINK',
-                                    color: Colors.blue,
+                                    color: Color(0xff278DE8),
                                     size: 26,
                                   ),
                                 ],
@@ -519,11 +549,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Text(
                                       'Water',
                                       style: TextStyle(
+                                        fontFamily: 'Mulish',
+
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Text('$selectedMl'),
+                                    Text('$selectedMl' + 'ml'),
                                   ],
                                 ),
                               ],

@@ -51,6 +51,9 @@ dependencies:
   android_alarm_manager_plus: ^4.0.7
   awesome_notifications: ^0.10.1
   flutter_alarm_clock: ^0.1.2
+  pdf: ^3.10.4
+  printing: ^5.12.0
+  audioplayers: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +79,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+     - assets/sounds/
      - assets/images/sp_img.png
      - assets/images/water.png
      - assets/images/alarm_time.png
@@ -114,7 +118,13 @@ flutter:
   fonts:
     - family: Mulish
       fonts:
+        - asset: fonts/Mulish-VariableFont_wght.ttf
+          weight: 400  # regular/default
         - asset: fonts/Mulish-Bold.ttf
+          weight: 700  # bold
+        - asset: fonts/Mulish-Italic-VariableFont_wght.ttf
+          style: italic
+
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

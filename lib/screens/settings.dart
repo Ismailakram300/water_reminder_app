@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:water_reminder_app/screens/reminder.dart';
-
+import 'package:audioplayers/audioplayers.dart';
 import '../Database/database_helper.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -12,33 +12,40 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
-  void showDailyGoalDialog(BuildContext context, int initialValue) {
+  Future<bool> showDailyGoalDialog(
+      BuildContext context,
+      int initialValue,
+      ) async {
     int currentValue = initialValue;
-
-    showDialog(
+    bool isSaved = false;
+    await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: Color(0xffE4E4E4),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
           title: Text(
             "Daily Goal",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Mulish'),
           ),
           content: StatefulBuilder(
             builder: (context, setState) {
-              return Column(
+              return Row(
                 mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   NumberPicker(
                     value: currentValue,
                     minValue: 100,
+                    decoration: BoxDecoration(),
                     maxValue: 10000,
                     step: 50,
                     haptics: true,
                     onChanged: (value) => setState(() => currentValue = value),
                     selectedTextStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
                       color: Colors.blue,
                       fontSize: 28,
                     ),
@@ -46,41 +53,75 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   Text(
                     "ml",
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff278DE8),
+                    ),
                   ),
                 ],
               );
             },
           ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text("CANCEL"),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                await DatabaseHelper.instance.updateDailyGoal(currentValue);
-                await DatabaseHelper.instance.debugPrintAllUserData();
-                Navigator.of(context).pop();
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                InkWell(
+                  onTap: () async {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.blue),
+                      //  color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Daily goal set to $currentValue ml")),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                    height: 40,
+                    width: 70,
+                    child: Center(
+                      child: Text(
+                        "CANCEL",
+                        style: TextStyle(
+                          color: Color(0xff7A7A7A),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Mulish',
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              child: Text("Save"),
+                SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: () async {
+                    await DatabaseHelper.instance.updateDailyGoal(currentValue);
+                    await DatabaseHelper.instance.debugPrintAllUserData();
+                    Navigator.of(context).pop();
+                    isSaved = true;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Daily goal set to $currentValue ml"),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Text("Save", style: TextStyle(color: Colors.white)),
+                ),
+              ],
             ),
           ],
         );
       },
     );
+    return isSaved;
   }
-
   void showWeightDialog(BuildContext context, int initialValue) {
     int weightValue = initialValue;
 
@@ -223,7 +264,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       },
     );
   }
-
   void showGenderDialog(BuildContext context, String initialGender) {
     String selectedGender = initialGender;
 
@@ -298,54 +338,98 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   String selectedSound = "Chime";
+
+  final AudioPlayer _player = AudioPlayer(); // declare once (globally or inside your class)
+
   void _showSoundPicker(BuildContext context) {
     List<String> sounds = ["Chime", "Bell", "Beep", "Drop"];
-    String tempSelectedSound =
-        selectedSound; // to update temporarily inside dialog
+    String tempSelectedSound = selectedSound;
 
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text("Select Reminder Sound"),
-          content: StatefulBuilder(
-            builder: (context, setState) {
-              return Column(
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              title: Text("Select Reminder Sound"),
+              content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: sounds.map((sound) {
                   return RadioListTile<String>(
                     title: Text(sound),
                     value: sound,
                     groupValue: tempSelectedSound,
-                    onChanged: (value) {
-                      setState(() {
+                    onChanged: (value) async {
+                      setDialogState(() {
                         tempSelectedSound = value!;
                       });
+
+                      // Play the selected sound
+                      try {
+                        await _player.stop(); // stop if a previous sound is playing
+                        await _player.play(
+                          AssetSource('sounds/${value!.toLowerCase()}.mp3'),
+                        );
+                      } catch (e) {
+                        print('Error playing sound: $e');
+                      }
                     },
                   );
                 }).toList(),
-              );
-            },
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("Cancel"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  selectedSound = tempSelectedSound;
-                });
-                Navigator.pop(context);
-                // You can also save it to preferences here if needed
-              },
-              child: Text("OK"),
-            ),
-          ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.blue),
+                      //  color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+
+                    height: 40,
+                    width: 70,
+                    child: Center(
+                      child: Text(
+                        "CANCEL",
+                        style: TextStyle(
+                          color: Color(0xff7A7A7A),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Mulish',
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () async{
+                    await _player.stop();
+                    Navigator.pop(context, tempSelectedSound); // return selected sound
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Text("Save", style: TextStyle(color: Colors.white)),
+
+                ),
+              ],
+            );
+          },
         );
       },
-    );
+    ).then((selected) {
+      if (selected != null) {
+        // ✅ update state of parent widget
+        setState(() {
+          selectedSound = selected;
+        });
+
+        // Optional: Save to SharedPreferences here if needed
+      }
+    });
   }
 
   Widget build(BuildContext context) {

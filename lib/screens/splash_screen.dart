@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
   Future<void> _checkSession() async {
-    await Future.delayed(Duration(seconds: 5)); // Optional: splash delay
+     // Optional: splash delay
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool hasCompletedOnboarding = prefs.getBool('onboardingComplete') ?? false;
     print(hasCompletedOnboarding);
@@ -54,7 +54,6 @@ class _SplashScreenState extends State<SplashScreen> {
     //     MaterialPageRoute(builder: (context) => OnboardingScreen()),
     //   );
     // });
-    _checkSession();
   }
 
   Widget build(BuildContext context) {
@@ -73,9 +72,37 @@ class _SplashScreenState extends State<SplashScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(height: 200,),
+
               Image(image: AssetImage("assets/images/water.png")),
               SizedBox(height: 10,),
               Mytext(txt: "Water Reminder",),
+              SizedBox(height: 150,),
+              InkWell(
+                onTap: _checkSession,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xff278DE8),
+                  ),
+                  width: 180,
+                  height: 45,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Mytext(
+
+                        txt: "Let's Start",
+                        size: 16,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 14,),
+                      Icon(Icons.arrow_forward,color: Colors.white,),
+
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
