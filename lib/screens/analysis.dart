@@ -88,6 +88,7 @@
 // }
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:water_reminder_app/customs_widgets/mytext.dart';
 import 'package:water_reminder_app/screens/weekly_water_chart.dart';
 
 import '../Database/database_helper.dart';
@@ -167,9 +168,9 @@ class _AnalysisState extends State<Analysis> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _statBox('Drink', '$drinkCount cups', Colors.lightBlue[100]!),
-                _statBox('Total', '$totalDrank ml', Colors.orange[100]!),
-                _statBox('Goal', '$dailyGoal ml', Colors.cyan[100]!),
+                _statBox('Drink', '$drinkCount cups', Color(0xffD3F3FE)!,Color(0xff278DE8)),
+                _statBox('Total', '$totalDrank ml', Color(0xffFFEEDF)!,Color(0xffC65900)),
+                _statBox('Goal', '$dailyGoal ml', Color(0xffD3F3FE)!,Color(0xff26A644)),
               ],
             ),
           ),
@@ -184,41 +185,50 @@ class _AnalysisState extends State<Analysis> {
                     "${log.timestamp.hour.toString().padLeft(2, '0')}:${log.timestamp.minute.toString().padLeft(2, '0')}";
 
                 return Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(25, 30, 25, 0),
                   child: Column(
                     children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(
-                            height:100,
+                            height:50,
                             width: 100,
                             child: Image.asset(
+                              fit: BoxFit.contain,
                               log.imagePath,
-                              height: 72,
-                              width: 52,
+
                               errorBuilder: (context, error, stackTrace) => Icon(
                                 Icons.local_drink,
                                 color: Colors.blue,
                                 size: 30,
                               ),
                             ),
-                          )
+                          ),
+                  Column(
+                    children: [
+                      Mytext(txt: '${log.amount} ml',size: 17,),
+                       Text(timeStr),
+
+                    ],
+                  )
+
                         ],
                       ),
-                      ListTile(
-                        leading: Image.asset(
-                          log.imagePath,
-                          height: 52,
-                          width: 52,
-                          errorBuilder: (context, error, stackTrace) => Icon(
-                            Icons.local_drink,
-                            color: Colors.blue,
-                            size: 30,
-                          ),
-                        ),
-                        title: Text('${log.amount} ml'),
-                        subtitle: Text(timeStr),
-                      ),
+                      // ListTile(
+                      //   leading: Image.asset(
+                      //     log.imagePath,
+                      //     height: 52,
+                      //     width: 52,
+                      //     errorBuilder: (context, error, stackTrace) => Icon(
+                      //       Icons.local_drink,
+                      //       color: Colors.blue,
+                      //       size: 30,
+                      //     ),
+                      //   ),
+                      //   title:
+                      //
+                      // ),
                       SizedBox(
                         width: double.infinity,
                         child: Divider(thickness: 1, color: Colors.black),
@@ -236,7 +246,7 @@ class _AnalysisState extends State<Analysis> {
     );
   }
 
-  Widget _statBox(String label, String value, Color color) {
+  Widget _statBox(String label, String value, Color color ,Color txtColor) {
     return Container(
       width: 100,
       padding: EdgeInsets.all(10),
@@ -246,9 +256,9 @@ class _AnalysisState extends State<Analysis> {
       ),
       child: Column(
         children: [
-          Text(label, style: TextStyle(color: Colors.black54)),
+          Text(label, style: TextStyle(color: Color(0xff525252))),
           SizedBox(height: 4),
-          Text(value, style: TextStyle(fontWeight: FontWeight.bold)),
+          Text(value, style: TextStyle(fontWeight: FontWeight.bold, color: txtColor)),
         ],
       ),
     );
