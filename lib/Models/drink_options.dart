@@ -14,7 +14,7 @@ class DrinkOption {
 List<DrinkOption> drinkOptions = [
   DrinkOption(imagePath: 'assets/images/water_50ml/water_50ml.png', ml: 50),
   DrinkOption(imagePath: 'assets/images/water_100ml/water_100ml.png', ml: 100),
-  DrinkOption(imagePath: 'assets/images/glass_200ml.png', ml: 200),
+  DrinkOption(imagePath: 'assets/images/water_200ml/water_200ml.png', ml: 200),
   DrinkOption(imagePath: 'assets/images/water_250ml/water_250ml.png', ml: 250),
   DrinkOption(imagePath: 'assets/images/water_300ml/water_300ml.png', ml: 300),
   DrinkOption(imagePath: 'assets/images/water_350ml/water_350ml.png', ml: 350),
