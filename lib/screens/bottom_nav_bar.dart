@@ -21,7 +21,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return Scaffold(
       body: screenList[_currentindex],
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xff278DE8),
         selectedItemColor: Colors.white,
         unselectedItemColor: Color(0xffD4D4D4),
         selectedLabelStyle: TextStyle(
@@ -29,10 +29,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
           fontWeight: FontWeight.bold,
           fontSize: 14,
         ),
-        unselectedLabelStyle: TextStyle(
-          color: Color(0xffD4D4D4),
-          fontSize: 12,
-        ),
+        // unselectedLabelStyle: TextStyle(
+        //   color: Color(0xffD4D4D4),
+        //   fontSize: 12,
+        // ),
         currentIndex: _currentindex, // ✅ Fix current index here
         onTap: (index) {
           setState(() {
@@ -41,9 +41,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
         },
 
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home,color:Colors.white,), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.analytics_outlined,color: Colors.white,), label: 'Analytics'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings,color: Colors.white,), label: 'Settings'),
+          BottomNavigationBarItem(icon: Icon(Icons.home_outlined,color: Color(0xffD4D4D4),), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.analytics_outlined,color: Color(0xffD4D4D4),), label: 'Analysis'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings,color: Color(0xffD4D4D4),), label: 'Settings'),
         ],
       ),
     );
