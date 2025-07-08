@@ -76,8 +76,9 @@ class _WeeklyWaterChartState extends State<WeeklyWaterChart> {
                 showTitles: true,
                 getTitlesWidget: (value, meta) {
                   return Text(
+
                     weekDays[value.toInt()],
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(color: Color(0xff525252)),
                   );
                 },
               ),
