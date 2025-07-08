@@ -73,7 +73,7 @@ class DatabaseHelper {
       'wakeUpTime': wakeUp,
       'sleepTime': sleep,
       'dailyGoal': dailyGoal,
-      'selectedImage': selectedImage ?? 'assets/images/glass-water.png',
+      'selectedImage': selectedImage ?? 'assets/images/water_100ml/water_100ml.png',
       'selectedMl': selectedMl ?? 100,
     }, conflictAlgorithm: ConflictAlgorithm.replace); // ✅ Overwrite row with ID = 1
   }
@@ -104,7 +104,7 @@ class DatabaseHelper {
 
     await db.insert('drink_logs', {
       'amount': amount,
-      'image': imagePath ?? 'assets/images/water_50ml.png',
+      'image': imagePath ?? 'assets/images/water_50ml/water_50ml.png',
       'timestamp': DateTime.now().toIso8601String(),
     });
 
@@ -178,6 +178,24 @@ class DatabaseHelper {
       );
     }).toList();
   }
+
+  Future<List<DrinkLog>> getAllLogs() async {
+    final db = await database;
+
+    final result = await db.rawQuery('''
+    SELECT amount, timestamp, image FROM drink_logs
+    ORDER BY timestamp DESC
+  ''');
+
+    return result.map((row) {
+      return DrinkLog(
+        amount: row['amount'] as int,
+        timestamp: DateTime.parse(row['timestamp'] as String),
+        imagePath: row['image'] as String,
+      );
+    }).toList();
+  }
+
   Future<void> updateWeight(int newWeight) async {
     final db = await database;
     final rows = await db.update(

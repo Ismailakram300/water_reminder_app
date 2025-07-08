@@ -24,15 +24,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
         backgroundColor: Color(0xff278DE8),
         selectedItemColor: Colors.white,
         unselectedItemColor: Color(0xffD4D4D4),
-        selectedLabelStyle: TextStyle(
-          color: Colors.white,
+        selectedLabelStyle: const TextStyle(
+          fontFamily: 'Mulish',
           fontWeight: FontWeight.bold,
           fontSize: 14,
         ),
-        // unselectedLabelStyle: TextStyle(
-        //   color: Color(0xffD4D4D4),
-        //   fontSize: 12,
-        // ),
+        unselectedLabelStyle: const TextStyle(
+          fontFamily: 'Mulish',
+          fontWeight: FontWeight.normal,
+          fontSize: 13,
+        ),
         currentIndex: _currentindex, // ✅ Fix current index here
         onTap: (index) {
           setState(() {
@@ -41,9 +42,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
         },
 
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home_outlined,color: Color(0xffD4D4D4),), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.analytics_outlined,color: Color(0xffD4D4D4),), label: 'Analysis'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings,color: Color(0xffD4D4D4),), label: 'Settings'),
+          BottomNavigationBarItem(icon: Icon(Icons.home_outlined,), label: 'Home',),
+          BottomNavigationBarItem(icon: Icon(Icons.analytics_outlined,), label: 'Analysis'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings,), label: 'Settings'),
         ],
       ),
     );
