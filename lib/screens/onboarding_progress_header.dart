@@ -35,13 +35,19 @@ class OnboardingProgressHeader extends StatelessWidget {
             int index = entry.key;
             var step = entry.value;
             bool selected = currentStep == index;
+            Color getStepColor(int index) {
+              if (currentStep == index) return Colors.blue;
+              if (currentStep > index) return Colors.blue;
+              return Colors.grey[300]!;
+            }
+
 
             return Column(
               children: [
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: selected ?Colors.blue: Colors.grey[300] ,
+                    color: getStepColor(index) ,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Image.asset(
