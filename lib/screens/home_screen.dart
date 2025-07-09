@@ -336,7 +336,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xffEFF7FF),
-        extendBodyBehindAppBar: false,
+       // extendBodyBehindAppBar: false,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Row(
