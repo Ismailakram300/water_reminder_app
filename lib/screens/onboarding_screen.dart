@@ -38,8 +38,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       await DatabaseHelper.instance.saveUserData(
         gender: selectedGender,
         weight: selectedWeight,
-        wakeUp: wakeUpTime.format(context),
-        sleep: sleepTime.format(context),
+        wakeUp:_formatTime24H(wakeUpTime),
+        sleep: _formatTime24H(sleepTime),
         dailyGoal: 2500,
       );
       checkUserData();
@@ -162,3 +162,5 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 }
+String _formatTime24H(TimeOfDay time) =>
+    '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
