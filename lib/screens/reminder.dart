@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-import '../main.dart';
-import '../notification_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'package:android_intent_plus/android_intent.dart';
-import 'package:android_intent_plus/flag.dart';
+import '../notification_service.dart';
 
 class ReminderScreen extends StatefulWidget {
   @override
@@ -14,23 +10,28 @@ class ReminderScreen extends StatefulWidget {
 }
 
 class _ReminderScreenState extends State<ReminderScreen> {
+  int selectedInterval = 0; // 0 = none selected
 
-  int selectedInterval = 30; // 30 minutes default
+  final List<int> reminderOptions = [30, 60, 120, 180, 240];
+
   @override
   void initState() {
     super.initState();
+    loadSavedInterval();
     requestNotificationPermission();
     if (Platform.isAndroid && Platform.version.compareTo('12') >= 0) {
       requestExactAlarmPermission();
     }
+  }
 
+  Future<void> requestNotificationPermission() async {
+    // Add your permission logic if needed
   }
 
   Future<void> requestExactAlarmPermission() async {
     const intent = AndroidIntent(
       action: 'android.settings.REQUEST_SCHEDULE_EXACT_ALARM',
     );
-
     try {
       await intent.launch();
     } catch (e) {
@@ -38,24 +39,35 @@ class _ReminderScreenState extends State<ReminderScreen> {
     }
   }
 
+  Future<void> loadSavedInterval() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      selectedInterval = prefs.getInt('selectedInterval') ?? 0;
+    });
+  }
 
-
-  final List<int> reminderOptions = [1, 60, 120, 180, 240];
-
+  Future<void> saveSelectedInterval(int? minutes) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (minutes != null && minutes > 0) {
+      await prefs.setInt('selectedInterval', minutes);
+    } else {
+      await prefs.remove('selectedInterval');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffEFF7FF),
       appBar: AppBar(
-        title: Text("Reminder"),
+        backgroundColor: Colors.blue,
+
+        title: Text("Reminder",style: TextStyle(fontFamily: 'Mulish',fontWeight: FontWeight.bold, color: Colors.white)),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back,color: Colors.white,),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       body: Container(
-        color: Color(0xFFEFF6FF),
         child: ListView.builder(
           padding: EdgeInsets.all(16),
           itemCount: reminderOptions.length,
@@ -69,27 +81,18 @@ class _ReminderScreenState extends State<ReminderScreen> {
                   selectedInterval = val ? minutes : 0;
                 });
 
-                // 1️⃣ Cancel any existing reminders
-                await NotificationService.cancelAll();
-               //await NotificationService.cancelAll();
+                // Cancel existing reminders
+                await NotificationService.cancelAllNotifications();
 
-                // If turned on, schedule repeating alarm every [minutes]
                 if (val) {
+                  // Save new selected interval and schedule notification
+                  await saveSelectedInterval(minutes);
                   await NotificationService.scheduleRepeating(minutes);
-                }
-
-                // 2️⃣ If ON: set a system alarm [minutes] from now
-                if (val) {
-                  final now = DateTime.now().add(Duration(minutes: minutes));
-                  FlutterAlarmClock.createAlarm(
-                  hour:   now.hour,
-                   minutes:  now.minute,
-                    title: '💧 Drink Water',
-                  );
+                } else {
+                  // Clear saved interval
+                  await saveSelectedInterval(null);
                 }
               },
-
-
             );
           },
         ),
@@ -117,13 +120,14 @@ class ReminderTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Color(0xffEFF7FF),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 1,
       margin: EdgeInsets.symmetric(vertical: 6),
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         title: Text(label),
-        subtitle: Text("Auto Reminder"),
+        subtitle: Text("Auto Reminder",style: TextStyle(fontFamily: 'Mulish',)),
         trailing: Switch(
           value: isSelected,
           onChanged: onChanged,
