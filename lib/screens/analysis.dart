@@ -90,11 +90,13 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:water_reminder_app/customs_widgets/mytext.dart';
+import 'package:water_reminder_app/screens/home_screen.dart';
 import 'package:water_reminder_app/screens/weekly_water_chart.dart';
 
 import '../Database/database_helper.dart';
 import '../Models/drinks_log.dart';
 import '../bar_chat.dart';
+import 'bottom_nav_bar.dart';
 import 'history.dart';
 
 class Analysis extends StatefulWidget {
@@ -168,7 +170,7 @@ class _AnalysisState extends State<Analysis> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // 👈 back to previous screen
+            Navigator.push(context, MaterialPageRoute(builder: (Context)=>BottomNavBar()));// 👈 back to previous screen
           },
         ),
       ),
