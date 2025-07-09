@@ -788,7 +788,7 @@ Row(
     TextButton(
       onPressed: () => Navigator.pop(context),
       child: Container(
-        decoration: BoxDecoration(\
+        decoration: BoxDecoration(
           border: Border.all(color: Colors.blue),
           //  color: Colors.blue,
           borderRadius: BorderRadius.circular(10),
