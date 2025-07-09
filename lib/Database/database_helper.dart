@@ -206,17 +206,27 @@ class DatabaseHelper {
     );
 
     print('Daily goal update -> $rows row(s) updated');
-  } Future<void> updateWakeUpTime(TimeOfDay time) async {
+  }
+  Future<void> updateWakeUpTime(String time) async {
     final db = await database;
-    final rows = await db.update(
+    await db.update(
       'user_data',
       {'wakeUpTime': time},
       where: 'id = ?',
       whereArgs: [1],
     );
-
-    print('Daily goal update -> $rows row(s) updated');
   }
+  Future<void> updateSleepTime(String time) async {
+    final db = await database;
+    await db.update(
+      'user_data',
+      {'wakeUpTime': time},
+      where: 'id = ?',
+      whereArgs: [1],
+    );
+  }
+
+
   Future<List<Map<String, dynamic>>> getWeeklyDrinkSummary() async {
     final db = await database;
 
