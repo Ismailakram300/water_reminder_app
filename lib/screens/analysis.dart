@@ -262,8 +262,8 @@ class _AnalysisState extends State<Analysis> {
                       ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-
+                  child: Transform.scale(
+                    scale: 0.6,
                     child: Switch(
                       activeColor: Colors.blue,
                       value: showTodayOnly,
