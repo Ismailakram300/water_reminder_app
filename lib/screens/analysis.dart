@@ -110,8 +110,11 @@ class _AnalysisState extends State<Analysis> {
   @override
   void initState() {
     super.initState();
-    _loadLogs();
+    // _loadLogs();
+    _loadData();
   }
+
+  bool showTodayOnly = true; // default: show today's data
 
   Future<void> _loadLogs() async {
     final logs = await DatabaseHelper.instance.getAllLogs();
@@ -123,6 +126,26 @@ class _AnalysisState extends State<Analysis> {
       drinkCount = logs.length;
       dailyGoal = userData?['dailyGoal'] ?? 2000;
     });
+  }
+
+  Future<void> _loadDaily() async {
+    final dailylogs = await DatabaseHelper.instance.getTodayLogs();
+    final userData = await DatabaseHelper.instance.getUserData();
+
+    setState(() {
+      waterLogs = dailylogs;
+      totalDrank = dailylogs.fold(0, (sum, item) => sum + item.amount);
+      drinkCount = dailylogs.length;
+      dailyGoal = userData?['dailyGoal'] ?? 2000;
+    });
+  }
+
+  Future<void> _loadData() async {
+    if (showTodayOnly) {
+      await _loadDaily();
+    } else {
+      await _loadLogs();
+    }
   }
 
   Map<String, List<DrinkLog>> _groupLogsByDate(List<DrinkLog> logs) {
@@ -153,26 +176,39 @@ class _AnalysisState extends State<Analysis> {
     return Scaffold(
       backgroundColor: Color(0xffFAFBFE),
       appBar: AppBar(
-      //  backgroundColor: Color(0xff),
+        actions: [
+
+        ],
+        //  backgroundColor: Color(0xff),
         backgroundColor: Color(0xff278DE8),
         automaticallyImplyLeading: true,
 
         // elevation: 0,
-        title: Text(
-          'Analysis',
-          style: TextStyle(
-            fontSize: 20,
-            fontFamily: 'Mulish',
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
+        title: Row(
+          children: [
+            IconButton(
+              padding: EdgeInsets.zero, // 👈 removes default padding
+              constraints: BoxConstraints(),
+              icon: Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (Context)=>BottomNavBar()));// 👈 back to previous screen
+              },
+            ),
+
+            SizedBox(width: 0), // 👈 Add space after the back button
+            Text(
+              'Analysis',
+              style: TextStyle(
+                fontSize: 20,
+                fontFamily: 'Mulish',
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ],
         ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (Context)=>BottomNavBar()));// 👈 back to previous screen
-          },
-        ),
+
+
       ),
       body: Column(
         children: [
@@ -189,6 +225,7 @@ class _AnalysisState extends State<Analysis> {
                 Text(
                   'Total: $totalDrank ml',
                   style: TextStyle(
+                    fontFamily: 'Mulish',
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.blue,
@@ -196,6 +233,49 @@ class _AnalysisState extends State<Analysis> {
                 ),
                 // SizedBox(height: 10),
                 Container(child: WeeklyWaterChart()),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 9, 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                showTodayOnly
+                    ? Text(
+                        'Show Todays Record :',
+                        style: TextStyle(
+                          fontFamily: 'Mulish',
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      )
+                    : Text(
+                        'Show Weekly Record :',
+                        style: TextStyle(
+                          fontFamily: 'Mulish',
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+
+                    child: Switch(
+                      activeColor: Colors.blue,
+                      value: showTodayOnly,
+                      onChanged: (value) {
+                        setState(() {
+                          showTodayOnly = value;
+                        });
+                        _loadData(); // re-fetch data when toggled
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -250,7 +330,7 @@ class _AnalysisState extends State<Analysis> {
                       // 📅 Date Heading
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                         children: [
                           Padding(
@@ -267,7 +347,12 @@ class _AnalysisState extends State<Analysis> {
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>History()));
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => History(),
+                                ),
+                              );
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -278,7 +363,6 @@ class _AnalysisState extends State<Analysis> {
                               height: 27,
                               child: Center(
                                 child: Mytext(
-
                                   txt: "Total Drank",
                                   size: 12,
                                   color: Colors.white,
@@ -321,81 +405,6 @@ class _AnalysisState extends State<Analysis> {
               },
             ),
           ),
-
-          // Drink Logs
-          // Expanded(
-          //   child: ListView.builder(
-          //     itemCount: waterLogs.length,
-          //     itemBuilder: (context, index) {
-          //       final log = waterLogs[index];
-          //       final dateTimeStr = DateFormat('MMM d, yyyy – h:mm a').format(log.timestamp);
-          //
-          //       return Padding(
-          //         padding: const EdgeInsets.fromLTRB(18, 10, 18, 0),
-          //         child: Column(
-          //           children: [
-          //             Card(
-          //               color: Color(0xffEFF7FF),
-          //               elevation: 4, // Shadow depth
-          //             //  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          //               shape: RoundedRectangleBorder(
-          //                 borderRadius: BorderRadius.circular(12),
-          //               ),
-          //               child: Padding(
-          //                 padding: const EdgeInsets.all(10),
-          //                 child: Row(
-          //                   mainAxisAlignment: MainAxisAlignment.start,
-          //                   children: [
-          //                     SizedBox(
-          //                       height: 43,
-          //                       width: 100,
-          //                       child: Image.asset(
-          //                         log.imagePath,
-          //                         fit: BoxFit.contain,
-          //                         errorBuilder: (context, error, stackTrace) => Icon(
-          //                           Icons.local_drink,
-          //                           color: Colors.blue,
-          //                           size: 24,
-          //                         ),
-          //                       ),
-          //                     ),
-          //                     const SizedBox(width: 2), // Space between image and text
-          //                     Column(
-          //                       crossAxisAlignment: CrossAxisAlignment.start,
-          //                       children: [
-          //                         Mytext(txt: '${log.amount} ml', size: 13,),
-          //                         Text(
-          //                           dateTimeStr,
-          //                           style: TextStyle(color: Colors.grey[600], fontSize: 11,                      fontFamily: 'Mulish',
-          //                           ),
-          //                         ),
-          //                       ],
-          //                     ),
-          //                   ],
-          //                 ),
-          //               ),
-          //             ),
-          //
-          //             // ListTile(
-          //             //   leading: Image.asset(
-          //             //     log.imagePath,
-          //             //     height: 52,
-          //             //     width: 52,
-          //             //     errorBuilder: (context, error, stackTrace) => Icon(
-          //             //       Icons.local_drink,
-          //             //       color: Colors.blue,
-          //             //       size: 30,
-          //             //     ),
-          //             //   ),
-          //             //   title:
-          //             //
-          //             // ),
-          //           ],
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ),
         ],
       ),
 
