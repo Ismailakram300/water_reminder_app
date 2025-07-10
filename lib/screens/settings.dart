@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:water_reminder_app/screens/bottom_nav_bar.dart';
 import 'package:water_reminder_app/screens/reminder.dart';
@@ -23,130 +25,122 @@ class _SettingsScreenState extends State<SettingsScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          content: SingleChildScrollView(
-            // ✅ Prevents overflow
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: 300,
-              ), // ✅ Keep width within limit
-              child: Column(
-                // mainAxisSize: MainAxisSize.min,
-                children: [
-                  // 👍 Icon in a bubble
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.blue.shade200),
-                    ),
-                    child: Icon(
-                      Icons.thumb_up_alt_outlined,
-                      size: 40,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    "Enjoying the app? Let us know!",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      fontFamily: 'Mulish',
-                    ),
-                  ),
-                  const SizedBox(height: 16),
+          content: Column(
+            // mainAxisSize: MainAxisSize.min,
+            children: [
+              // 👍 Icon in a bubble
+              Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.blue.shade200),
+                ),
+                child: Icon(
+                  Icons.thumb_up_alt_outlined,
+                  size: 40,
+                  color: Colors.blue,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                "Enjoying the app? Let us know!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  fontFamily: 'Mulish',
+                ),
+              ),
+              const SizedBox(height: 16),
 
-                  // ⭐ Star Rating
-                  StatefulBuilder(
-                    builder: (context, setState) {
-                      return SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(5, (index) {
-                            return IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  selectedRating = index + 1;
-                                });
-                              },
-                              icon: Icon(
-                                index < selectedRating
-                                    ? Icons.star
-                                    : Icons.star_border,
-                                color: Colors.amber,
-                              ),
-                            );
-                          }),
+              // ⭐ Star Rating
+              StatefulBuilder(
+                builder: (context, setState) {
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(5, (index) {
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedRating = index + 1;
+                            });
+                          },
+                          child: Icon(
+                            index < selectedRating ? Icons.star : Icons.star_border,
+                            size: 35,
+                            color: Colors.amber,
+                          ),
+                        );
+                      }),
+
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 12),
+
+              // Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      // handle rating logic here
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            "Thanks for rating us $selectedRating stars!",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              fontFamily: 'Mulish',
+                            ),
+                          ),
                         ),
                       );
                     },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      "Rate",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                  const SizedBox(height: 12),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue),
+                        //  color: Colors.blue,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
 
-                  // Buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          // handle rating logic here
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                "Thanks for rating us $selectedRating stars!",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  fontFamily: 'Mulish',
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
+                      height: 40,
+                      width: 70,
+                      child: Center(
                         child: Text(
-                          "Rate",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blue),
-                            //  color: Colors.blue,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-
-                          height: 40,
-                          width: 70,
-                          child: Center(
-                            child: Text(
-                              "Later",
-                              style: TextStyle(
-                                color: Color(0xff7A7A7A),
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Mulish',
-                              ),
-                            ),
+                          "Later",
+                          style: TextStyle(
+                            color: Color(0xff7A7A7A),
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Mulish',
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),
-            ),
+            ],
           ),
         );
       },
@@ -844,6 +838,7 @@ Row(
   }
 
   Widget build(BuildContext context) {
+    final Uri _url = Uri.parse('https://flutter.dev');
     return Scaffold(
       backgroundColor: Color(0xffEFF7FF),
       appBar: AppBar(
@@ -983,8 +978,23 @@ Row(
               showRateUsDialog(context);
             },
           ),
-          _buildSettingsTile("Privacy Policy"),
-          _buildSettingsTile("Share"),
+          _buildSettingsTile("Privacy Policy",),
+          _buildSettingsTile("Share", onTap: () async{
+            final params = ShareParams(
+              text: 'Check out my app: https://play.google.com/store/apps/details?id=com.yourcompany.app',
+              subject: 'Awesome Flutter App',
+            );
+            final result = await SharePlus.instance.share(params);
+
+            if (result.status == ShareResultStatus.success) {
+              print('Thank you for sharing my website!');
+            }
+         
+          }),
+          _buildSettingsTile("Exit", onTap: () async{
+       SystemNavigator.pop();
+
+          }),
         ],
       ),
     );
