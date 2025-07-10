@@ -26,10 +26,10 @@ Future<void> main()  async {
   requestNotificationPermission();
 
 
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.lightBlue,
-  //  statusBarIconBrightness: Brightness.dark,
-  ));
+  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  //   statusBarColor: Colors.lightBlue,
+  // //  statusBarIconBrightness: Brightness.dark,
+  // ));
 
 
   runApp(const MyApp());
