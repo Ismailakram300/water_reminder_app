@@ -176,7 +176,7 @@ class _AnalysisState extends State<Analysis> {
       ..sort((a, b) => b.compareTo(a)); // newest first
     return Scaffold(
       backgroundColor: Color(0xffFAFBFE),
-      appBar: MyAppBar(title: 'Analysis'),
+      appBar: MyAppBar(title: 'Analytics'),
       body: Column(
         children: [
           // Bar Chart Section
@@ -228,7 +228,7 @@ class _AnalysisState extends State<Analysis> {
                         ),
                       ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.fromLTRB(8 ,8, 8,0),
                   child: Transform.scale(
                     scale: 0.65,
                     child: Switch(
@@ -249,12 +249,12 @@ class _AnalysisState extends State<Analysis> {
 
           // Drink, Total, Goal Stats
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+            padding: const EdgeInsets.fromLTRB(8, 0,8, 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _statBox(
-                  'Drink',
+                  'Drinks',
                   '$drinkCount cups',
                   Color(0xffD3F3FE)!,
                   Color(0xff278DE8),

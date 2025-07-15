@@ -382,25 +382,28 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                SizedBox(
-                  width: 300,
-                  height: 300,
-                  child: LiquidCustomProgressIndicator(
-                    value: _counter,
-                    valueColor: AlwaysStoppedAnimation(Color(0xff4EA0E9)),
-                    backgroundColor: const Color(0xff9ED1FF),
-                    direction: Axis.vertical,
-                    center: Text(
-                      '${(_counter * 100).toInt()}%',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Mulish',
+                Padding(
+                  padding: const EdgeInsets.all(17.0),
+                  child: SizedBox(
+                    width: 300,
+                    height: 300,
+                    child: LiquidCustomProgressIndicator(
+                      value: _counter,
+                      valueColor: AlwaysStoppedAnimation(Color(0xff4EA0E9)),
+                      backgroundColor: const Color(0xff9ED1FF),
+                      direction: Axis.vertical,
+                      center: Text(
+                        '${(_counter * 100).toInt()}%',
+                        style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                          fontFamily: 'Mulish',
 
-                        color: Colors.white,
-                        fontSize: 18,
+                          color: Colors.white,
+                          fontSize: 25,
+                        ),
                       ),
+                      shapePath: _buildWaterDropPath(),
                     ),
-                    shapePath: _buildWaterDropPath(),
                   ),
                 ),
 
@@ -600,15 +603,15 @@ Path _buildWaterDropPath() {
 
   // Right curve going up
   path.cubicTo(
-    250, 300,  // Control point 1 (bottom right bulge)
-    240, 120,  // Control point 2 (top right curve)
+    290, 300,  // Control point 1 (bottom right bulge)
+    240, 110,  // Control point 2 (top right curve)
     150, 0,    // Top center (drop tip)
   );
 
   // Left curve going down
   path.cubicTo(
     60, 120,   // Control point 1 (top left curve)
-    50, 300,   // Control point 2 (bottom left bulge)
+    10, 300,   // Control point 2 (bottom left bulge)
     150, 300,  // Back to bottom center
   );
 

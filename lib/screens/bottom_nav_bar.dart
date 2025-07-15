@@ -43,7 +43,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home_outlined,), label: 'Home',),
-          BottomNavigationBarItem(icon: Icon(Icons.analytics_outlined,), label: 'Analysis'),
+          BottomNavigationBarItem(icon: Icon(Icons.analytics_outlined,), label: 'Analytics'),
           BottomNavigationBarItem(icon: Icon(Icons.settings,), label: 'Settings'),
         ],
       ),

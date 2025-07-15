@@ -30,8 +30,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
               ); // 👈 back to previous screen
             },
           ),
-
-          SizedBox(width: 0), // 👈 Add space after the back button
+ // 👈 Add space after the back button
           Text(
             title,
             style: TextStyle(
