@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:water_reminder_app/customs_widgets/appbar.dart';
 import '../Database/database_helper.dart';
 import '../Models/drinks_log.dart';
 import 'package:pdf/pdf.dart';
@@ -81,22 +82,7 @@ class _HistoryState extends State<History> {
       ),
 
       backgroundColor: Color(0xffE4E4E4),
-      appBar: AppBar(
-
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context); // 👈 back to previous screen
-          },
-        ),
-        title: Text('Daily Drink Totals',style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontFamily: 'Mulish',
-
-        ),),
-        backgroundColor: Colors.blue,
-      ),
+      appBar: MyAppBar(title: "History"),
 
       body: ListView.builder(
         itemCount: sortedDates.length,
