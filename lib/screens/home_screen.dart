@@ -333,261 +333,259 @@ class _HomeScreenState extends State<HomeScreen> {
   final date = DateFormat('MMM d').format(DateTime.now());
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Color(0xffEFF7FF),
-       // extendBodyBehindAppBar: false,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Row(
-            children: [
-              Image.asset(
-                "assets/images/app_drop/app_drop.png", // your image path
-                height: 50,
-                width: 50,
-              ),
-              const SizedBox(width: 12),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '$day, $date',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xffFFFFFF),
-                      fontFamily: 'Mulish',
-                    ),
+    return Scaffold(
+      backgroundColor: Color(0xffEFF7FF),
+      // extendBodyBehindAppBar: false,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            Image.asset(
+              "assets/images/app_drop/app_drop.png", // your image path
+              height: 50,
+              width: 50,
+            ),
+            const SizedBox(width: 12),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '$day, $date',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Color(0xffFFFFFF),
+                    fontFamily: 'Mulish',
                   ),
-                  Text(
-                    'Today',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: 'Mulish',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                ),
+                Text(
+                  'Today',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Mulish',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
-                ],
-              ),
-            ],
-          ),
-
-          backgroundColor: Color(0xff278DE8),
+                ),
+              ],
+            ),
+          ],
         ),
 
-        body: Column(
-          children: [
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    width: 300,
-                    height: 300,
-                    child: LiquidCustomProgressIndicator(
-                      value: _counter,
-                      valueColor: AlwaysStoppedAnimation(Color(0xff4EA0E9)),
-                      backgroundColor: const Color(0xff9ED1FF),
-                      direction: Axis.vertical,
-                      center: Text(
-                        '${(_counter * 100).toInt()}%',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Mulish',
+        backgroundColor: Color(0xff278DE8),
+      ),
 
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
+      body: Column(
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  width: 300,
+                  height: 300,
+                  child: LiquidCustomProgressIndicator(
+                    value: _counter,
+                    valueColor: AlwaysStoppedAnimation(Color(0xff4EA0E9)),
+                    backgroundColor: const Color(0xff9ED1FF),
+                    direction: Axis.vertical,
+                    center: Text(
+                      '${(_counter * 100).toInt()}%',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Mulish',
+
+                        color: Colors.white,
+                        fontSize: 18,
                       ),
-                      shapePath: _buildWaterDropPath(),
                     ),
+                    shapePath: _buildWaterDropPath(),
                   ),
+                ),
 
-                  Container(
-                    width: 290,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "${((todayDrank / dailyGoal) * 100).clamp(0, 100).toInt()}%",
-                              style: TextStyle(fontFamily: 'Mulish'),
-                            ),
-                            Text(
-                              '$dailyGoal' + 'ml',
-                              style: TextStyle(
-                                fontFamily: 'Mulish',
-                                color: Color(0xff3E3E3E),
-                              ),
-                            ),
-                          ],
-                        ),
-                        LinearPercentIndicator(
-                          width: 290,
-
-                          animation: false,
-                          lineHeight: 15.0,
-                          animationDuration: 2000,
-                          percent: _counter,
-                          padding: EdgeInsets.all(0.0),
-                          barRadius: Radius.circular(5),
-                          backgroundColor: const Color(0xff9ED1FF),
-                          progressColor: Colors.blue,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Progress',
-                              style: TextStyle(
-                                fontFamily: 'Mulish',
-                                color: Color(0xff3E3E3E),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 6, 0, 0),
-                              child: InkWell(
-                                onTap: () async {
-                                  final userData = await DatabaseHelper.instance
-                                      .getUserData();
-                                  final currentGoal =
-                                      userData?['dailyGoal'] ?? 2000;
-                                  final update = await showDailyGoalDialog(
-                                    context,
-                                    currentGoal,
-                                  );
-                                  if (update) {
-                                    await _loadProgress();
-                                  }
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xff278DE8),
-                                  ),
-                                  width: 75,
-                                  height: 27,
-                                  child: Center(
-                                    child: Mytext(
-                                      txt: "Daily Goal",
-                                      size: 12,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                        GestureDetector(
-                          onTap: () {
-                            _addDrink(selectedMl, selectedImage);
-                          },
-                          child: Container(
-                            height: 54,
-                            width: 290,
-
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(
-                                    0.3,
-                                  ), // Shadow color
-                                  spreadRadius: 2, // How much it spreads
-                                  blurRadius: 8, // How blurry it looks
-                                  offset: Offset(4, 4), // X and Y offset
-                                ),
-                              ],
-                              //border: Border.all(color: Colors.grey, width: 1.5),
-                              borderRadius: BorderRadius.circular(100),
-                              color: Colors.white,
-                            ),
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.add,
-                                    color: Color(0xff278DE8),
-                                    size: 35,
-                                  ),
-                                  Mytext(
-                                    txt: 'DRINK',
-                                    color: Color(0xff278DE8),
-                                    size: 26,
-                                  ),
-                                ],
-                              ),
+                Container(
+                  width: 290,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "${((todayDrank / dailyGoal) * 100).clamp(0, 100).toInt()}%",
+                            style: TextStyle(fontFamily: 'Mulish'),
+                          ),
+                          Text(
+                            '$dailyGoal' + 'ml',
+                            style: TextStyle(
+                              fontFamily: 'Mulish',
+                              color: Color(0xff3E3E3E),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 30),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  height: 50,
-                                  width: 40,
-                                  child: Image.asset(
-                                    height: 60,
-                                    width: 50,
-                                    fit: BoxFit.fill,
-                                    selectedImage,
-                                  ),
-                                ),
-                                SizedBox(width: 10),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Water',
-                                      style: TextStyle(
-                                        fontFamily: 'Mulish',
+                        ],
+                      ),
+                      LinearPercentIndicator(
+                        width: 290,
 
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text('$selectedMl' + 'ml'),
-                                  ],
-                                ),
-                              ],
+                        animation: false,
+                        lineHeight: 15.0,
+                        animationDuration: 2000,
+                        percent: _counter,
+                        padding: EdgeInsets.all(0.0),
+                        barRadius: Radius.circular(5),
+                        backgroundColor: const Color(0xff9ED1FF),
+                        progressColor: Colors.blue,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Progress',
+                            style: TextStyle(
+                              fontFamily: 'Mulish',
+                              color: Color(0xff3E3E3E),
                             ),
-                            InkWell(
-                              onTap: _showDrinkSelector,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 6, 0, 0),
+                            child: InkWell(
+                              onTap: () async {
+                                final userData = await DatabaseHelper.instance
+                                    .getUserData();
+                                final currentGoal =
+                                    userData?['dailyGoal'] ?? 2000;
+                                final update = await showDailyGoalDialog(
+                                  context,
+                                  currentGoal,
+                                );
+                                if (update) {
+                                  await _loadProgress();
+                                }
+                              },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(120),
+                                  borderRadius: BorderRadius.circular(10),
                                   color: Color(0xff278DE8),
                                 ),
-                                width: 86,
-                                height: 31,
+                                width: 75,
+                                height: 27,
                                 child: Center(
                                   child: Mytext(
-                                    txt: "Edit",
-                                    size: 19,
+                                    txt: "Daily Goal",
+                                    size: 12,
                                     color: Colors.white,
                                   ),
                                 ),
                               ),
                             ),
-                          ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () {
+                          _addDrink(selectedMl, selectedImage);
+                        },
+                        child: Container(
+                          height: 54,
+                          width: 290,
+
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(
+                                  0.3,
+                                ), // Shadow color
+                                spreadRadius: 2, // How much it spreads
+                                blurRadius: 8, // How blurry it looks
+                                offset: Offset(4, 4), // X and Y offset
+                              ),
+                            ],
+                            //border: Border.all(color: Colors.grey, width: 1.5),
+                            borderRadius: BorderRadius.circular(100),
+                            color: Colors.white,
+                          ),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  color: Color(0xff278DE8),
+                                  size: 35,
+                                ),
+                                Mytext(
+                                  txt: 'DRINK',
+                                  color: Color(0xff278DE8),
+                                  size: 26,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                height: 50,
+                                width: 40,
+                                child: Image.asset(
+                                  height: 60,
+                                  width: 50,
+                                  fit: BoxFit.fill,
+                                  selectedImage,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Water',
+                                    style: TextStyle(
+                                      fontFamily: 'Mulish',
+
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text('$selectedMl' + 'ml'),
+                                ],
+                              ),
+                            ],
+                          ),
+                          InkWell(
+                            onTap: _showDrinkSelector,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(120),
+                                color: Color(0xff278DE8),
+                              ),
+                              width: 86,
+                              height: 31,
+                              child: Center(
+                                child: Mytext(
+                                  txt: "Edit",
+                                  size: 19,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -597,27 +595,21 @@ class _HomeScreenState extends State<HomeScreen> {
 Path _buildWaterDropPath() {
   final path = Path();
 
-  // Start at the bottom center
+  // Bottom center of the drop
   path.moveTo(150, 300);
 
-  // Right side curve
+  // Right curve going up
   path.cubicTo(
-    260,
-    230, // Control point 1 (right)
-    260,
-    100, // Control point 2 (top right curve)
-    150,
-    0, // End at top point
+    250, 300,  // Control point 1 (bottom right bulge)
+    240, 120,  // Control point 2 (top right curve)
+    150, 0,    // Top center (drop tip)
   );
 
-  // Left side curve
+  // Left curve going down
   path.cubicTo(
-    40,
-    100, // Control point 1 (top left curve)
-    40,
-    230, // Control point 2 (left)
-    150,
-    300, // Back to bottom center
+    60, 120,   // Control point 1 (top left curve)
+    50, 300,   // Control point 2 (bottom left bulge)
+    150, 300,  // Back to bottom center
   );
 
   path.close();
