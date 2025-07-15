@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'package:android_intent_plus/android_intent.dart';
+import '../customs_widgets/appbar.dart';
 import '../notification_service.dart';
 
 class ReminderScreen extends StatefulWidget {
@@ -58,15 +59,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-
-        title: Text("Reminder",style: TextStyle(fontFamily: 'Mulish',fontWeight: FontWeight.bold, color: Colors.white)),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back,color: Colors.white,),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
+      appBar: MyAppBar(title: 'Reminder'),
       body: Container(
         child: ListView.builder(
           padding: EdgeInsets.all(16),
