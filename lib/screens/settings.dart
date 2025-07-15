@@ -8,6 +8,7 @@ import 'package:water_reminder_app/screens/bottom_nav_bar.dart';
 import 'package:water_reminder_app/screens/reminder.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../Database/database_helper.dart';
+import '../customs_widgets/appbar.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -25,122 +26,125 @@ class _SettingsScreenState extends State<SettingsScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          content: Column(
-            // mainAxisSize: MainAxisSize.min,
-            children: [
-              // 👍 Icon in a bubble
-              Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.blue.shade200),
+          content: SizedBox(
+            height: 230,
+            child: Column(
+              // mainAxisSize: MainAxisSize.min,
+              children: [
+                // 👍 Icon in a bubble
+                Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.blue.shade200),
+                  ),
+                  child: Icon(
+                    Icons.thumb_up_alt_outlined,
+                    size: 40,
+                    color: Colors.blue,
+                  ),
                 ),
-                child: Icon(
-                  Icons.thumb_up_alt_outlined,
-                  size: 40,
-                  color: Colors.blue,
+                const SizedBox(height: 12),
+                Text(
+                  "Enjoying the app? Let us know!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    fontFamily: 'Mulish',
+                  ),
                 ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                "Enjoying the app? Let us know!",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  fontFamily: 'Mulish',
-                ),
-              ),
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-              // ⭐ Star Rating
-              StatefulBuilder(
-                builder: (context, setState) {
-                  return SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(5, (index) {
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedRating = index + 1;
-                            });
-                          },
-                          child: Icon(
-                            index < selectedRating ? Icons.star : Icons.star_border,
-                            size: 35,
-                            color: Colors.amber,
+                // ⭐ Star Rating
+                StatefulBuilder(
+                  builder: (context, setState) {
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(5, (index) {
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedRating = index + 1;
+                              });
+                            },
+                            child: Icon(
+                              index < selectedRating ? Icons.star : Icons.star_border,
+                              size: 35,
+                              color: Colors.amber,
+                            ),
+                          );
+                        }),
+
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 12),
+
+                // Buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        // handle rating logic here
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              "Thanks for rating us $selectedRating stars!",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                fontFamily: 'Mulish',
+                              ),
+                            ),
                           ),
                         );
-                      }),
-
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text(
+                        "Rate",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
-                  );
-                },
-              ),
-              const SizedBox(height: 12),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.blue),
+                          //  color: Colors.blue,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
 
-              // Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      // handle rating logic here
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            "Thanks for rating us $selectedRating stars!",
+                        height: 40,
+                        width: 70,
+                        child: Center(
+                          child: Text(
+                            "Later",
                             style: TextStyle(
+                              color: Color(0xff7A7A7A),
                               fontWeight: FontWeight.bold,
-                              fontSize: 16,
                               fontFamily: 'Mulish',
                             ),
                           ),
                         ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: Text(
-                      "Rate",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blue),
-                        //  color: Colors.blue,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-
-                      height: 40,
-                      width: 70,
-                      child: Center(
-                        child: Text(
-                          "Later",
-                          style: TextStyle(
-                            color: Color(0xff7A7A7A),
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Mulish',
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -841,29 +845,7 @@ Row(
     final Uri _url = Uri.parse('https://flutter.dev');
     return Scaffold(
       backgroundColor: Color(0xffEFF7FF),
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => BottomNavBar()),
-            ); // 👈 back to previous screen
-          },
-        ),
-        automaticallyImplyLeading: true,
-        title: Text(
-          'Settings',
-          style: TextStyle(
-            fontFamily: 'Mulish',
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        // centerTitle: true,
-        backgroundColor: Colors.blue,
-        elevation: 0,
-      ),
+      appBar: MyAppBar(title: 'Settings'),
       body: ListView(
         padding: const EdgeInsets.all(9.0),
         children: [
