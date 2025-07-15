@@ -89,6 +89,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:water_reminder_app/customs_widgets/appbar.dart';
 import 'package:water_reminder_app/customs_widgets/mytext.dart';
 import 'package:water_reminder_app/screens/home_screen.dart';
 import 'package:water_reminder_app/screens/weekly_water_chart.dart';
@@ -175,41 +176,7 @@ class _AnalysisState extends State<Analysis> {
       ..sort((a, b) => b.compareTo(a)); // newest first
     return Scaffold(
       backgroundColor: Color(0xffFAFBFE),
-      appBar: AppBar(
-        actions: [
-
-        ],
-        //  backgroundColor: Color(0xff),
-        backgroundColor: Color(0xff278DE8),
-        automaticallyImplyLeading: true,
-
-        // elevation: 0,
-        title: Row(
-          children: [
-            IconButton(
-              padding: EdgeInsets.zero, // 👈 removes default padding
-              constraints: BoxConstraints(),
-              icon: Icon(Icons.arrow_back, color: Colors.white),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (Context)=>BottomNavBar()));// 👈 back to previous screen
-              },
-            ),
-
-            SizedBox(width: 0), // 👈 Add space after the back button
-            Text(
-              'Analysis',
-              style: TextStyle(
-                fontSize: 20,
-                fontFamily: 'Mulish',
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-
-
-      ),
+      appBar: MyAppBar(title: 'Analysis'),
       body: Column(
         children: [
           // Bar Chart Section
@@ -263,7 +230,7 @@ class _AnalysisState extends State<Analysis> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Transform.scale(
-                    scale: 0.6,
+                    scale: 0.65,
                     child: Switch(
                       activeColor: Colors.blue,
                       value: showTodayOnly,
