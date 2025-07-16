@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io';
-import 'package:android_intent_plus/android_intent.dart';
 import '../customs_widgets/appbar.dart';
 import '../notification_service.dart';
 
@@ -20,25 +18,13 @@ class _ReminderScreenState extends State<ReminderScreen> {
     super.initState();
     loadSavedInterval();
     requestNotificationPermission();
-    if (Platform.isAndroid && Platform.version.compareTo('12') >= 0) {
-      requestExactAlarmPermission();
-    }
+
   }
 
   Future<void> requestNotificationPermission() async {
     // Add your permission logic if needed
   }
 
-  Future<void> requestExactAlarmPermission() async {
-    const intent = AndroidIntent(
-      action: 'android.settings.REQUEST_SCHEDULE_EXACT_ALARM',
-    );
-    try {
-      await intent.launch();
-    } catch (e) {
-      print('❌ Failed to open exact alarm permission settings: $e');
-    }
-  }
 
   Future<void> loadSavedInterval() async {
     final prefs = await SharedPreferences.getInstance();
