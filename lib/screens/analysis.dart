@@ -86,18 +86,14 @@
 //     );
 //   }
 // }
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:water_reminder_app/customs_widgets/appbar.dart';
 import 'package:water_reminder_app/customs_widgets/mytext.dart';
-import 'package:water_reminder_app/screens/home_screen.dart';
 import 'package:water_reminder_app/screens/weekly_water_chart.dart';
 
 import '../Database/database_helper.dart';
 import '../Models/drinks_log.dart';
-import '../bar_chat.dart';
-import 'bottom_nav_bar.dart';
 import 'history.dart';
 
 class Analysis extends StatefulWidget {
@@ -227,20 +223,17 @@ class _AnalysisState extends State<Analysis> {
                           color: Colors.black,
                         ),
                       ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8 ,8, 8,0),
-                  child: Transform.scale(
-                    scale: 0.65,
-                    child: Switch(
-                      activeColor: Colors.blue,
-                      value: showTodayOnly,
-                      onChanged: (value) {
-                        setState(() {
-                          showTodayOnly = value;
-                        });
-                        _loadData(); // re-fetch data when toggled
-                      },
-                    ),
+                Transform.scale(
+                  scale: 0.55,
+                  child: Switch(
+                    activeColor: Colors.blue,
+                    value: showTodayOnly,
+                    onChanged: (value) {
+                      setState(() {
+                        showTodayOnly = value;
+                      });
+                      _loadData(); // re-fetch data when toggled
+                    },
                   ),
                 ),
               ],
