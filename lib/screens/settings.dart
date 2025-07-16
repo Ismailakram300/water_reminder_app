@@ -71,13 +71,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               });
                             },
                             child: Icon(
-                              index < selectedRating ? Icons.star : Icons.star_border,
+                              index < selectedRating
+                                  ? Icons.star
+                                  : Icons.star_border,
                               size: 35,
                               color: Colors.amber,
                             ),
                           );
                         }),
-
                       ),
                     );
                   },
@@ -677,55 +678,55 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           actions: [
-Row(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  children: [
-    InkWell(
-      onTap: () async {
-        Navigator.pop(context);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.blue),
-          //  color: Colors.blue,
-          borderRadius: BorderRadius.circular(10),
-        ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                InkWell(
+                  onTap: () async {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.blue),
+                      //  color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
 
-        height: 40,
-        width: 70,
-        child: Center(
-          child: Text(
-            "CANCEL",
-            style: TextStyle(
-              color: Color(0xff7A7A7A),
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Mulish',
+                    height: 40,
+                    width: 70,
+                    child: Center(
+                      child: Text(
+                        "CANCEL",
+                        style: TextStyle(
+                          color: Color(0xff7A7A7A),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Mulish',
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                ElevatedButton(
+                  onPressed: () async {
+                    await DatabaseHelper.instance.updateGender(selectedGender);
+                    await DatabaseHelper.instance.debugPrintAllUserData();
+                    Navigator.of(context).pop();
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Gender set to $selectedGender")),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Text("Save", style: TextStyle(color: Colors.white)),
+                ),
+              ],
             ),
-          ),
-        ),
-      ),
-    ),
-
-    ElevatedButton(
-      onPressed: () async {
-        await DatabaseHelper.instance.updateGender(selectedGender);
-        await DatabaseHelper.instance.debugPrintAllUserData();
-        Navigator.of(context).pop();
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Gender set to $selectedGender")),
-        );
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-      child: Text("Save", style: TextStyle(color: Colors.white)),
-    ),
-  ],
-)
           ],
         );
       },
@@ -780,51 +781,53 @@ Row(
                 }).toList(),
               ),
               actions: [
-Row(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  children: [
-    TextButton(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.blue),
+                          //  color: Colors.blue,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
 
-      onPressed: () => Navigator.pop(context),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.blue),
-          //  color: Colors.blue,
-          borderRadius: BorderRadius.circular(10),
-        ),
-
-        height: 40,
-        width: 70,
-        child: Center(
-          child: Text(
-            "CANCEL",
-            style: TextStyle(
-              color: Color(0xff7A7A7A),
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Mulish',
-            ),
-          ),
-        ),
-      ),
-    ),
-    ElevatedButton(
-      onPressed: () async {
-        await _player.stop();
-        Navigator.pop(
-          context,
-          tempSelectedSound,
-        ); // return selected sound
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-      child: Text("Save", style: TextStyle(color: Colors.white)),
-    ),
-  ],
-)
+                        height: 40,
+                        width: 70,
+                        child: Center(
+                          child: Text(
+                            "CANCEL",
+                            style: TextStyle(
+                              color: Color(0xff7A7A7A),
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Mulish',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        await _player.stop();
+                        Navigator.pop(
+                          context,
+                          tempSelectedSound,
+                        ); // return selected sound
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text(
+                        "Save",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             );
           },
@@ -961,23 +964,28 @@ Row(
               showRateUsDialog(context);
             },
           ),
-          _buildSettingsTile("Privacy Policy",),
-          _buildSettingsTile("Share", onTap: () async{
-            final params = ShareParams(
-              text: 'Check out my app: https://play.google.com/store/apps/details?id=com.yourcompany.app',
-              subject: 'Awesome Flutter App',
-            );
-            final result = await SharePlus.instance.share(params);
+          _buildSettingsTile("Privacy Policy"),
+          _buildSettingsTile(
+            "Share",
+            onTap: () async {
+              final params = ShareParams(
+                text:
+                    'Check out my app: https://play.google.com/store/apps/details?id=com.yourcompany.app',
+                subject: 'Awesome Flutter App',
+              );
+              final result = await SharePlus.instance.share(params);
 
-            if (result.status == ShareResultStatus.success) {
-              print('Thank you for sharing my website!');
-            }
-         
-          }),
-          _buildSettingsTile("Exit", onTap: () async{
-       SystemNavigator.pop();
-
-          }),
+              if (result.status == ShareResultStatus.success) {
+                print('Thank you for sharing my website!');
+              }
+            },
+          ),
+          _buildSettingsTile(
+            "Exit",
+            onTap: () async {
+              SystemNavigator.pop();
+            },
+          ),
         ],
       ),
     );
