@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../screens/bottom_nav_bar.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
@@ -10,29 +9,24 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
 
   @override
   Widget build(BuildContext context) {
-    return  AppBar(
-      actions: [],
-      //  backgroundColor: Color(0xff),
+    return AppBar(
       backgroundColor: Color(0xff278DE8),
-      automaticallyImplyLeading: false,
-
-      // elevation: 0,
+      automaticallyImplyLeading: false, // Since we're manually adding the back button
+      elevation: 0,
+      titleSpacing: 0, // 👈 removes default spacing from the left
       title: Row(
         children: [
           IconButton(
-            padding: EdgeInsets.zero, // 👈 removes default padding
-            constraints: BoxConstraints(),
             icon: Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (Context) => BottomNavBar()),
-              ); // 👈 back to previous screen
+                MaterialPageRoute(builder: (context) => BottomNavBar()),
+              );
             },
           ),
- // 👈 Add space after the back button
           Text(
-            title,
+            'Analytics',
             style: TextStyle(
               fontSize: 20,
               fontFamily: 'Mulish',
@@ -43,5 +37,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
         ],
       ),
     );
+
   }
 }
