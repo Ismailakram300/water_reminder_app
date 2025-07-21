@@ -6,7 +6,6 @@ class NotificationService {
   
   static Future<void> initialize() async {
     await AwesomeNotifications().initialize(
-
       null,
       [
         NotificationChannel(
