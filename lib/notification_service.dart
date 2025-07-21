@@ -7,6 +7,7 @@ class NotificationService {
     await AwesomeNotifications().initialize(
       null,
       [
+        
         NotificationChannel(
           channelKey: 'default_water_reminder',
           channelName: 'Default Water Reminder',
